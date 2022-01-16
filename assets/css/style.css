@@ -338,13 +338,13 @@ h2 {
   left: 0;
   right: 0;
   z-index: 30;
-  margin-top: 1.5rem;
+  /*margin-top: 1.5rem;*/
 }
 .page-header img {
   width: auto;
   height: auto;
-  max-width: 200px;
-  max-height: 200px;
+  max-width: 160px;
+  max-height: 160px;
 }
 
 .slider_warp {
