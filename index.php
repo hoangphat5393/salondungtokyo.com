@@ -3,11 +3,6 @@
 
 <?php 
     $atz = new index_controller();
-
-    // $post_content = '';
-
-    // // Lấy chuyên mục và bài viết được chỉ định cụ thể
-    // $post_content = $atz->get_posts(1);
 ?>
 
 <!-- END LIB -->
@@ -28,10 +23,11 @@
 
 <body>
 
-    <div class="page">
-        <!-- Main Header -->
-        <?php include('modules/header.php')?>    
+    <!-- Main Header -->
+    <?php include('modules/header.php')?>    
 
+
+    <div class="page">
     	<!-- Main Slider -->
     	<?php include('modules/slider.php')?>
 	</div>
@@ -64,7 +60,7 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="animate__animated animate__fadeInUp animate__slow">
                         <figure>
-                            <img src="assets/images/hairstyles.jpg" class="img-fluid d-block mx-auto" alt="Làm tóc" title="Làm tóc">
+                            <img src="assets/images/cat_toc_nam.jpg" class="img-fluid d-block mx-auto" alt="Cắt tóc nam" title="Cắt tóc nam">
                             <figcaption>Cắt tóc nam</figcaption>
                         </figure>
                         <div class="block-caption">
@@ -75,7 +71,7 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="animate__animated animate__fadeInUp">
                         <figure>
-                            <img src="assets/images/coloring.jpg" class="img-fluid d-block mx-auto" alt="Nhuộm" title="Nhuộm">
+                            <img src="assets/images/nhuom.jpg" class="img-fluid d-block mx-auto" alt="Nhuộm" title="Nhuộm">
                             <figcaption>Nhuộm</figcaption>
                         </figure>
                         <div class="block-caption">
@@ -87,7 +83,7 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="animate__animated animate__fadeInUp">
                         <figure>
-                            <img src="assets/images/coloring.jpg" class="img-fluid d-block mx-auto" alt="Nhuộm" title="Nhuộm">
+                            <img src="assets/images/uon_toc.jpg" class="img-fluid d-block mx-auto" alt="Nhuộm" title="Nhuộm">
                             <figcaption>Uốn tóc</figcaption>
                         </figure>
                         <div class="block-caption">
@@ -99,11 +95,11 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="animate__animated animate__fadeInUp">
                         <figure>
-                            <img src="assets/images/coloring.jpg" class="img-fluid d-block mx-auto" alt="Nhuộm" title="Nhuộm">
-                            <figcaption>Uốn tóc</figcaption>
+                            <img src="assets/images/phuc_hoi_toc.jpg" class="img-fluid d-block mx-auto" alt="Phục hồi tóc" title="Phục hồi tóc">
+                            <figcaption>Phục hồi tóc</figcaption>
                         </figure>
                         <div class="block-caption">
-                            <h4><a class="services-name" href="#">Phục hồi</a></h4>
+                            <h4><a class="services-name" href="#">Phục hồi tóc</a></h4>
                         </div>
                     </div>
                 </div>
@@ -111,8 +107,8 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="animate__animated animate__fadeInUp">
                         <figure>
-                            <img src="assets/images/coloring.jpg" class="img-fluid d-block mx-auto" alt="Nhuộm" title="Nhuộm">
-                            <figcaption>Uốn tóc</figcaption>
+                            <img src="assets/images/dao_tao.jpg" class="img-fluid d-block mx-auto" alt="Đào tạo học viên" title="Đào tạo học viên">
+                            <figcaption>Đào tạo học viên</figcaption>
                         </figure>
                         <div class="block-caption">
                             <h4><a class="services-name" href="#">Đào tạo học viên</a></h4>
@@ -134,9 +130,7 @@
                 <div class="row justify-content-md-center">
                     <div class="col-md-10 wow-outer">
                         <div class="wow animate__animated animate__fadeInUp">
-                            <!-- <h4 class="text-secondary-2 text-uppercase">only 3 days</h4> -->
                             <h2>Dịch vụ làm tóc</h2>
-                            <!-- <a class="button button-md button-primary" href="#">view more</a> -->
                         </div>
                     </div>
                 </div>
@@ -354,63 +348,56 @@
 
     <section class="section section-lg bg-gray-1 contacts" id="contact">
         <div class="container">
-            <!-- <div class="row justify-content-left justify-content-lg-between row-2-columns-bordered row-50"> -->
             <div class="row justify-content-center row-2-columns-bordered">
-                <!-- <div class="col-md-10 col-lg-4">
+                <div class="col-md-5 col-lg-5">
                     <h2 class="text-center text-sm-left">LIÊN HỆ</h2>
-                    <div class="row-md-6 row-lg-4">
-                        <div class="box-icon-modern">
-                            <div class="box-icon-inner decorate-triangle decorate-color-primary-light">
-                                <span class="icon-xl linearicons-phone-incoming icon-gray-800"></span>
-                            </div>
-                            <div class="box-icon-caption">
-                                <h4><a href="#">1-800-123-1234</a></h4>
-                                <p>You can call us anytime</p>
-                            </div>
+                    <div class="box-icon-modern d-flex">
+                        <div class="box-icon-inner decorate-circle decorate-color-primary-light">
+                            <i class="far fa-2x fa-fw fa-phone"></i>
+                        </div>
+                        <div class="box-icon-caption">
+                            <h4><a href="tel:<?=str_replace(' ', '', SETTING['Setting_Phone'])?>"><?=SETTING['Setting_Phone']?></a></h4>
                         </div>
                     </div>
-                    <div class="row-md-6 row-lg-4">
-                        <div class="box-icon-modern">
-                            <div class="box-icon-inner decorate-circle decorate-color-primary-light">
-                                <span class="icon-xl linearicons-map2 icon-gray-800"></span>
-                            </div>
-                            <div class="box-icon-caption">
-                                <h4><a href="#">51 Francis Street, Darlinghurst NSW 2010, United States</a></h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row-md-6 row-lg-4">
-                        <div class="box-icon-modern">
-                            <div class="box-icon-inner decorate-rectangle decorate-color-primary-light">
-                                <span class="icon-xl linearicons-paper-plane icon-gray-800"></span>
-                            </div>
-                            <div class="box-icon-caption">
-                                <h4><a href="#">info@demolink.org</a></h4>
-                                <p>Feel free to email us your questions</p>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
 
-                <div class="col-md-10 col-lg-7">
+                    <div class="box-icon-modern d-flex">
+                        <div class="box-icon-inner decorate-circle decorate-color-primary-light">
+                            <i class="far fa-2x fa-fw fa-map"></i>
+                        </div>
+                        <div class="box-icon-caption">
+                            <h4><a href="#"><?=SETTING['Setting_Address']?></a></h4>
+                        </div>
+                    </div>
+
+                    <div class="box-icon-modern d-flex">
+                        <div class="box-icon-inner decorate-circle decorate-color-primary-light">
+                            <i class="far fa-2x fa-fw fa-paper-plane"></i>
+                        </div>
+                        <div class="box-icon-caption">
+                            <h4><a href="mailto:<?=SETTING['Setting_Email']?>"><?=SETTING['Setting_Email']?></a></h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-7 col-lg-7">
                     <h2 class="text-center text-sm-left">ĐỂ LẠI THÔNG TIN</h2>
                     <!-- RD Mailform-->
-                    <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" action="bat/rd-mailform.php" novalidate="novalidate">
+                    <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" action="" novalidate="novalidate">
                         <div class="form-wrap rd-form-2-2">
-                            <input class="form-input form-control-has-validation" id="contact-name" type="text" name="name" data-constraints="@Required"><span class="form-validation"></span>
-                            <label class="form-label rd-input-label" for="contact-name">Name</label>
+                            <input class="form-input form-control-has-validation" id="contact-name" type="text" name="name"><span class="form-validation"></span>
+                            <label class="form-label rd-input-label" for="contact-name">Tên</label>
                         </div>
                         <div class="form-wrap rd-form-2-2">
-                            <input class="form-input form-control-has-validation" id="contact-email" type="email" name="email" data-constraints="@Email @Required"><span class="form-validation"></span>
+                            <input class="form-input form-control-has-validation" id="contact-email" type="email" name="email"><span class="form-validation"></span>
                             <label class="form-label rd-input-label" for="contact-email">Email</label>
                         </div>
                         <div class="form-wrap rd-form-2-2">
-                            <label class="form-label rd-input-label" for="contact-message"> Message</label>
-                            <textarea class="form-input form-control-has-validation form-control-last-child" id="contact-message" name="message" data-constraints="@Required"></textarea><span class="form-validation"></span>
+                            <label class="form-label rd-input-label" for="contact-message">Lời nhắn</label>
+                            <textarea class="form-input form-control-has-validation form-control-last-child" id="contact-message" name="message"></textarea><span class="form-validation"></span>
                         </div>
                         <div class="row justify-content-left">
                             <div class="col-12 col-sm-7 col-lg-5">
-                                <button class="button button-third" type="submit">Send Message</button>
+                                <button class="button button-third" type="submit">Gửi</button>
                             </div>
                         </div>
                     </form>
@@ -421,9 +408,9 @@
 
 
 	<!-- Button trigger modal -->
-	<button type="button" class="btn btn-primary btn-absolute font-weight-bold " data-toggle="modal" data-target="#exampleModal">
+	<!-- <button type="button" class="btn btn-primary btn-absolute font-weight-bold " data-toggle="modal" data-target="#exampleModal">
 		Đăng Ký<br>Nhận Báo Giá
-	</button>
+	</button> -->
 	
 	<!-- Modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

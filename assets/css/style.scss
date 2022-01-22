@@ -10,7 +10,7 @@
 
 /*body{font-family: 'Helvetica', 'Arial', sans-serif;}
 */
-body{font-family: "Poppins", sans-serif;}
+body{font-family: arial}
 
 h1, h2, h3, h4, h5, h6 {
 	font-family: "Montserrat", sans-serif;
@@ -65,6 +65,8 @@ h2{font-size: 1.75rem}
 		    transition: .25s;
 		}
 	}
+
+	padding: 0 1rem;
 }
 
 /*END MENU*/
@@ -81,9 +83,18 @@ h2{font-size: 1.75rem}
 }
 
 .services{
-	figcaption{
-		display: none;
+
+	figure{
+		img{
+			width: 370px;
+			height: 373px;
+		}
+
+		figcaption{
+			display: none;
+		}
 	}
+	
 
 	.block-caption{
 		padding: 1.25rem;
@@ -353,21 +364,21 @@ h2{font-size: 1.75rem}
 	@extend .link-effect;
 }
 
-.page{
-	position: relative;
-}
+.page{position: relative;}
 
 .page-header{
-	position: absolute;
+	/*position: absolute;
     left: 0;
     right: 0;
-    z-index: 30;
-    /*margin-top: 1.5rem;*/
+    z-index: 30;*/
+    .bg-menu{
+    	background-color: #3f454b;
+    }
     img{
     	width: auto;
     	height: auto;
-    	max-width: 160px;
-    	max-height: 160px;
+    	max-width: 80px;
+    	max-height: 80px;
     }
 }
 
@@ -381,11 +392,15 @@ h2{font-size: 1.75rem}
 	min-height: 100vh;
     height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: end;
     justify-content: center;
 
     .bunner-content-modern {
-	    position: relative;
+    	.decorative-line{
+    		font-family: serif;
+	    	font-style: italic;   	
+    	}
+    	position: relative;
 
 	    .decorative-line {
 		    position: relative;
@@ -422,7 +437,7 @@ h2{font-size: 1.75rem}
 	    letter-spacing: 0.01em;
 	    text-transform: uppercase;
 	    color: #ffffff;
-	    text-shadow: 0px 4px 12px rgb(0,0,0.3);
+	    text-shadow: 0px 4px 6px rgb(0,0,0.3);
 	}
 
 	@media (min-width: 992px){
@@ -449,6 +464,22 @@ h2{font-size: 1.75rem}
 
 
 .contacts{
+
+	.box-icon-modern{
+		margin-top: 3rem;
+		
+		.box-icon-caption{
+			margin-left: 1.5rem;
+		}
+
+		a{
+			font-size: 22px;
+			color: #000;
+		    font-weight: 500;
+		    &:hover{color: #7240B2;}
+		    transition: .25s;
+		}
+	}
 
 	h2{
 	    font-family: "Montserrat", sans-serif;
@@ -532,9 +563,9 @@ h2{font-size: 1.75rem}
 	    border: 1px solid #151515;
 	}
 
-	.rd-form .button {
+	/*.rd-form .button {
 	    min-height: 60px;
-	}
+	}*/
 
 	.button-third, .button-third:focus {
 	    color: #ffffff;

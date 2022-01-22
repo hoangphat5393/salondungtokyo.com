@@ -9,6 +9,8 @@
 <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicons/favicon-16x16.png">
 <!-- <link rel="manifest" href="assets/images/favicons/site.webmanifest"> -->
 
+<link rel="canonical" href="<?=$atz->site_url['main']?>">
+
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="assets/bootstrap-4.6.0/css/bootstrap.min.css">
 

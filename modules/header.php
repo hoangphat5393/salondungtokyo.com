@@ -1,13 +1,6 @@
-<header class="section page-header">
-	<!-- <div class="container">
-	    <div class="row">
-	        <div class="col-md-12">
-	            <img src="assets/images/logo.png" class="img-fluid" alt="">  
-	        </div>
-	    </div>
-    </div> -->
+<header class="section page-header sticky-top">
 
-    <nav class="navbar navbar-expand-md navbar-dark">
+    <nav class="navbar navbar-expand-md navbar-dark bg-menu">
 		<div class="container">
 		    <a class="navbar-brand" href="#">
 		    	<img src="assets/images/logo.png" class="img-fluid" alt="">  

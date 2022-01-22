@@ -1,6 +1,6 @@
 <?php
 	
-	define('DOMAIN','amthuc68.vn');
+	define('DOMAIN','salondungtokyo.com');
 
 	// define('RECAPTCHA', array(
 	// 	'site_key'		=>	'6Ld_jMIZAAAAAFe5IAthv_jzvobKnR3rvhKNQD69'

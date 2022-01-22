@@ -10,7 +10,7 @@
 /*body{font-family: 'Helvetica', 'Arial', sans-serif;}
 */
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: arial;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -66,6 +66,9 @@ h2 {
   }
 }
 /*MENU*/
+.navbar-dark {
+  padding: 0 1rem;
+}
 .navbar-dark .navbar-nav .nav-link {
   color: #fff;
   text-transform: uppercase;
@@ -86,7 +89,11 @@ h2 {
   transition: all 0.3s ease-in-out;
 }
 
-.services figcaption {
+.services figure img {
+  width: 370px;
+  height: 373px;
+}
+.services figure figcaption {
   display: none;
 }
 .services .block-caption {
@@ -334,17 +341,19 @@ h2 {
 }
 
 .page-header {
-  position: absolute;
-  left: 0;
-  right: 0;
-  z-index: 30;
-  /*margin-top: 1.5rem;*/
+  	/*position: absolute;
+      left: 0;
+      right: 0;
+      z-index: 30;*/
+}
+.page-header .bg-menu {
+  background-color: #3f454b;
 }
 .page-header img {
   width: auto;
   height: auto;
-  max-width: 160px;
-  max-height: 160px;
+  max-width: 80px;
+  max-height: 80px;
 }
 
 .slider_warp {
@@ -356,11 +365,15 @@ h2 {
   min-height: 100vh;
   height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: center;
 }
 .slider_warp .bunner-content-modern {
   position: relative;
+}
+.slider_warp .bunner-content-modern .decorative-line {
+  font-family: serif;
+  font-style: italic;
 }
 .slider_warp .bunner-content-modern .decorative-line {
   position: relative;
@@ -393,7 +406,7 @@ h2 {
   letter-spacing: 0.01em;
   text-transform: uppercase;
   color: #ffffff;
-  text-shadow: 0px 4px 12px black;
+  text-shadow: 0px 4px 6px black;
 }
 @media (min-width: 992px) {
   .slider_warp .big-text {
@@ -413,6 +426,26 @@ h2 {
 
 /*SLIDER*/
 /*SLIDER END*/
+.contacts {
+  /*.rd-form .button {
+      min-height: 60px;
+  }*/
+}
+.contacts .box-icon-modern {
+  margin-top: 3rem;
+}
+.contacts .box-icon-modern .box-icon-caption {
+  margin-left: 1.5rem;
+}
+.contacts .box-icon-modern a {
+  font-size: 22px;
+  color: #000;
+  font-weight: 500;
+  transition: .25s;
+}
+.contacts .box-icon-modern a:hover {
+  color: #7240B2;
+}
 .contacts h2 {
   font-family: "Montserrat", sans-serif;
   margin-top: 0;
@@ -483,9 +516,6 @@ h2 {
   -webkit-appearance: none;
   transition: .3s ease-in-out;
   border: 1px solid #151515;
-}
-.contacts .rd-form .button {
-  min-height: 60px;
 }
 .contacts .button-third, .contacts .button-third:focus {
   color: #ffffff;
