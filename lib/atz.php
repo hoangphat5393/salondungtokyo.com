@@ -1,14 +1,12 @@
-<?php ob_start(); session_start();?>
-<?php 
+<?php
 	require_once("db.php");
 	
 	// Thông tin cấu hình do coder cài đặt
-	require('config.php');
+	require_once('config.php');
 
 	include_once 'image.php';
 ?>
 <?php
-
 
 use Image\image;
 
@@ -25,15 +23,15 @@ class atz extends DB{
 	}
 
 	public function config_url(){
-		
+
 		// Đường dẫn tuyệt đối | Absolute path
-		if($_SERVER['HTTP_HOST']=='localhost'){
+		if(strpos($_SERVER['HTTP_HOST'],'localhost')!== false){
 			$web_url['root'] = $_SERVER['DOCUMENT_ROOT'].'/'.DOMAIN.'/';
 		}else{
 			$web_url['root'] = $_SERVER['DOCUMENT_ROOT'].'/';
 		}
 		
-		if($_SERVER['HTTP_HOST']=='localhost'){
+		if(strpos($_SERVER['HTTP_HOST'],'localhost')!== false){
 			$web_url['main'] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://".$_SERVER['HTTP_HOST']."/".DOMAIN.'/';
 		}else{
 			$web_url['main'] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://".$_SERVER['HTTP_HOST'].'/';
@@ -57,6 +55,63 @@ class atz extends DB{
 	}
 
 	
+	public function get_params($index){
+        global $param;
+
+        // CHECK MODULE
+        if(!empty($_GET['module'])){
+            $module = $_GET['module'];
+        }else{
+            $module = _module_default;
+        }
+            
+        
+        
+        // REPLACE ROUTER
+        $url = '';
+        if (!empty($routes)) {
+            foreach($routes as $key => $value){
+                if(preg_match('#^'.$key.'$#', $module)){
+                    $url = preg_replace('#^'.$key.'$#', $value, $module);
+                    break;
+                }
+
+            }
+        }
+
+        // CHECK URL
+        if(!empty($url)){
+            $module = $url;
+        }
+
+        $module_arr = array_filter(explode('/',$module));
+
+        $url = '';
+        
+        if(!empty($module_arr)){
+            foreach ($module_arr as $key => $item) {
+                // $url = $url.'/'.$item;
+
+                $url = $item; // Set url
+                if(file_exists($url.'.php')){        
+                    for($i=0; $i <= $key; $i++){
+                        unset($module_arr[$i]);
+                    }
+                    break;    
+                }
+            }
+        }
+        
+        // GET PARAM
+        if(!empty($param)){
+	        $param = array_values($module_arr);
+	        if($param[$index-1]){
+	            return $param[$index-1];
+	        }
+	    }
+        return false;
+    }
+
 	// Kiểm tra quản trị đăng nhập
 	function check_login(){
 		if(!isset($_SESSION['user'])){
@@ -95,6 +150,71 @@ class atz extends DB{
 			define('SETTING', $data[0]);
 		}
 	}
-}
 
+	// Get The IP Address Of A Visitor Through PHP
+	function getIPAddress() {
+	    //whether ip is from the share internet  
+	    if(!empty($_SERVER['HTTP_CLIENT_IP'])) {  
+	        $ip = $_SERVER['HTTP_CLIENT_IP'];  
+	    }  
+	    //whether ip is from the proxy  
+	    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {  
+	        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];  
+	    }
+		//whether ip is from the remote address  
+	    else{  
+	        $ip = $_SERVER['REMOTE_ADDR'];  
+	    }  
+	    return $ip;  
+	}
+
+	function getUserIP(){
+	    // Get real visitor IP behind CloudFlare network
+	    if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
+	              $_SERVER['REMOTE_ADDR'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+	              $_SERVER['HTTP_CLIENT_IP'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+	    }
+	    $client  = @$_SERVER['HTTP_CLIENT_IP'];
+	    $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+	    $remote  = $_SERVER['REMOTE_ADDR'];
+
+	    if(filter_var($client, FILTER_VALIDATE_IP))
+	    {
+	        $ip = $client;
+	    }
+	    elseif(filter_var($forward, FILTER_VALIDATE_IP))
+	    {
+	        $ip = $forward;
+	    }
+	    else
+	    {
+	        $ip = $remote;
+	    }
+
+	    return $ip;
+	}
+
+
+	public function slug($str, $spaceRepl = "-") {
+
+		$str = preg_replace("/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/", 'a', $str);
+		$str = preg_replace("/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/", 'e', $str);
+		$str = preg_replace("/(ì|í|ị|ỉ|ĩ)/", 'i', $str);
+		$str = preg_replace("/(ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ)/", 'o', $str);
+		$str = preg_replace("/(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)/", 'u', $str);
+		$str = preg_replace("/(ỳ|ý|ỵ|ỷ|ỹ)/", 'y', $str);
+		$str = preg_replace("/(đ)/", 'd', $str);
+		$str = preg_replace("/(À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ)/", 'A', $str);
+		$str = preg_replace("/(È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ)/", 'E', $str);
+		$str = preg_replace("/(Ì|Í|Ị|Ỉ|Ĩ)/", 'I', $str);
+		$str = preg_replace("/(Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ)/", 'O', $str);
+		$str = preg_replace("/(Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ)/", 'U', $str);
+		$str = preg_replace("/(Ỳ|Ý|Ỵ|Ỷ|Ỹ)/", 'Y', $str);
+		$str = preg_replace("/(Đ)/", 'D', $str);
+		$str = preg_replace("/(\“|\”|\‘|\’|\,|\!|\&|\;|\@|\#|\%|\~|\`|\=|\_|\'|\]|\[|\}|\{|\)|\(|\+|\^)/", '-', $str);
+		$str = preg_replace("/( )/", '-', $str);
+
+		return $str;
+	}
+}
 ?>

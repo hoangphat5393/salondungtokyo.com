@@ -5,10 +5,10 @@ class DB{
 
 	function connect(){
 
-		$host = 'localhost';
+		$host = 'db';
 		$username = 'root';
-		$password = '';
-		$dbname = 'salon_246853';
+		$password = '123456';
+		$dbname = '3nong';
 		
 		// $host = 'localhost';
 		// $username = 'getatz_salon123';
