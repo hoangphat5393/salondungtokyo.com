@@ -8,7 +8,7 @@ class DB{
 		$host = 'db';
 		$username = 'root';
 		$password = '123456';
-		$dbname = '3nong';
+		$dbname = 'getatz_salon123';
 		
 		// $host = 'localhost';
 		// $username = 'getatz_salon123';
@@ -193,16 +193,16 @@ class DB{
 		return $data;
 	}
 
-	function mysql_query($query){
+	function raw_query($query){
 
         // Kết nối
         $this->connect();
         
         $result = mysqli_query($this->__conn, $query);
         
-        if (!$result){
-            die ('Câu truy vấn bị sai');
-        }
+		if (!$result){
+			die('Error: ' . mysqli_error($this->__conn));
+		}
 
         $data = array();
 		while ($row = mysqli_fetch_assoc($result)) {
@@ -299,6 +299,11 @@ class DB{
 
 		
 		$result = mysqli_query($this->__conn, $sql);
+
+		if($result){
+			$sql = "ALTER TABLE `".$table."` AUTO_INCREMENT = 1";
+			mysqli_query($this->__conn, $sql);
+		}
 
 		return $result;
 	}

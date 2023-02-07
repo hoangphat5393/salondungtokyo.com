@@ -182,6 +182,13 @@
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="animate__animated animate__fadeInUp animate__slow">
                         <figure>
+                            <img src="assets/images/gallery5.jpg" class="img-fluid d-block mx-auto" alt="Cắt tóc" title="Cắt tóc">
+                        </figure>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="animate__animated animate__fadeInUp animate__slow">
+                        <figure>
                             <img src="assets/images/gallery1.jpg" class="img-fluid d-block mx-auto" alt="Cắt tóc" title="Cắt tóc">
                         </figure>
                     </div>
@@ -197,13 +204,6 @@
                     <div class="animate__animated animate__fadeInUp animate__slow">
                         <figure>
                             <img src="assets/images/gallery3.jpg" class="img-fluid d-block mx-auto" alt="Cắt tóc" title="Cắt tóc">
-                        </figure>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                    <div class="animate__animated animate__fadeInUp animate__slow">
-                        <figure>
-                            <img src="assets/images/gallery4.jpg" class="img-fluid d-block mx-auto" alt="Cắt tóc" title="Cắt tóc">
                         </figure>
                     </div>
                 </div>
@@ -225,16 +225,20 @@
                 <div class="col-lg-5 mb-4 mb-lg-0 wow-outer block-1 text-center text-lg-left">
                   <div class="wow animate__animated animate__slideInRight" style="visibility: visible; animation-name: slideInRight;">
                     <h2>Giới thiệu</h2>
-                    <p class="p1 mt-3">Curl is one of the premier hair salons in Los Angeles, frequented not only by women but by men and kids as well.</p>
-                    <p>Our hair salon has earned an incredible reputation as our professional team of hairstylists continues to work wonders on clients’ hair and enhance their assets through our services.</p>
-                    <a class="button button-md button-primary" href="#">view more</a>
+                    <p class="p1 mt-3">LÀM NGHỀ 20 NĂM KINH NGHIỆM</p>
+                    <p>
+                        Salon sử dụng sản phẩm chăm sóc tóc chuyên nghiệp như L'Oreal, GOLDWELL, thân thiên với môi trường và an toan cho sức khỏe
+                        <br>
+                        Uy tín, tạo niềm tin cho khách hàng
+                    </p>
+                    <!-- <a class="button button-md button-primary" href="#">view more</a> -->
                   </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section section-lg bg-gray-1 pricing" id="pricing">
+    <!-- <section class="section section-lg bg-gray-1 pricing" id="pricing">
         <div class="container">
             <h2 class="text-center wow animate__animated animate__slideInUp1" style="visibility: visible;">Giá</h2>
             <div class="row mt-5">
@@ -344,7 +348,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <section class="section section-lg bg-gray-1 contacts" id="contact">
         <div class="container">
@@ -453,13 +457,13 @@
 							</div>
 						</div>
 						
-						<div class="form-row mb-3">
+						<!-- <div class="form-row mb-3">
 							<div class="col-md-12 text-center">
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
 								<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
 								<button type="submit" name="submit-contact" class="btn btn-primary">Gửi</button>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</form>
 			</div>

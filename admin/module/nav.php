@@ -49,7 +49,7 @@
 				</ul>
 			</li>
 			
-			<!-- <li class="<?=strpos($page,'cat_')?'active':''?>">
+			<li class="<?=strpos($page,'cat_')?'active':''?>">
 				<a href="#"><i class="fa fa-lg fa-fw fa-list-alt"></i> <span class="menu-item-parent">Chuyên mục</span></a>
 				<ul>
 					<li class="<?=strpos($page,'cat_add')?'active':''?>">
@@ -59,10 +59,10 @@
 						<a href="cat_list.php">Danh sách chuyên mục</a>
 					</li>
 				</ul>
-			</li> -->
+			</li>
 
 
-			<!-- <li class="<?=strpos($page,'product_')?'active':''?>">
+			<li class="<?=strpos($page,'product_')?'active':''?>">
 				<a href="#"><i class="fa fa-lg fa-fw fa fa-shopping-bag"></i> <span class="menu-item-parent">Sản phẩm</span></a>
 				<ul>
 					<li class="<?=strpos($page,'product_add')?'active':''?>">
@@ -72,7 +72,7 @@
 						<a href="product_list.php">Danh sản phẩm</a>
 					</li>
 				</ul>
-			</li> -->
+			</li>
 
 			<li class="<?=strpos($page,'post_')?'active':''?>">
 				<a href="#"><i class="fa fa-lg fa-fw fa-copy"></i> <span class="menu-item-parent">Bài viết</span></a>

@@ -13,9 +13,9 @@
 		            <li class="nav-item">
 		                <a class="nav-link" href="#services">Dịch vụ</a>
 		            </li>
-		            <li class="nav-item">
+		            <!-- <li class="nav-item">
 		                <a class="nav-link" href="#pricing">Giá</a>
-		            </li>
+		            </li> -->
 		            <li class="nav-item">
 		                <a class="nav-link" href="#contact">Liên Hệ</a>
 		            </li>
