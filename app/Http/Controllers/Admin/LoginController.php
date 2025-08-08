@@ -1,0 +1,63 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+
+class LoginController extends Controller
+{
+    /*
+    |--------------------------------------------------------------------------
+    | Login Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles authenticating users for the application and
+    | redirecting them to your home screen. The controller uses a trait
+    | to conveniently provide its functionality to your applications.
+    |
+    */
+
+    use AuthenticatesUsers;
+
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+
+    protected $redirectTo = '/admin';
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+
+    public function __construct()
+    {
+        // F:\web\onehealth.foundation\app\Http\Middleware\RedirectIfAuthenticated.php
+        $this->middleware('guest:admin')->except('logout');
+    }
+
+    public function guard()
+    {
+        return Auth::guard('admin');
+    }
+
+    public function showLoginForm()
+    {
+        return view('backend.auth.login');
+    }
+
+    // public function login()
+    // {
+    //     // dd(123);
+    // }
+    public function logout()
+    {
+        Auth::guard('admin')->logout();
+        return redirect()->route('admin.login');
+    }
+}

@@ -44,8 +44,8 @@ storage/framework/views/
 storage/logs
 public/upload/files
 vendor/
-.composer.lock
-.package-lock.json
+composer.lock
+package-lock.json
 
 
 
@@ -70,3 +70,7 @@ phpunit.xml.dist
 # *.flv
 # *.mov
 # *.wmv
+
+
+
+
