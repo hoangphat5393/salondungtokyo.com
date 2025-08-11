@@ -39,7 +39,7 @@
             {{-- begin::Brand Link --}}
             <a href="{{ route('admin.dashboard') }}" class="brand-link">
                 {{-- begin::Brand Image --}}
-                <img src="{{ get_image(setting_option('logo_vi')) }}" alt="AdminLTE Logo" class="brand-image opacity-75 shadow" />
+                <img src="{{ setting_option('logo') }}" alt="AdminLTE Logo" class="brand-image opacity-75 shadow" />
                 {{-- begin::Brand Text --}}
                 {{-- <span class="brand-text fw-light">GetAZ</span> --}}
             </a>
