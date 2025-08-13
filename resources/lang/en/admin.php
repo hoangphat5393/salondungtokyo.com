@@ -397,6 +397,8 @@ return [
     "name" => "name",
     "username" => "username",
 
+    "yes" => "yes",
+    "no" => "no",
     "copy" => "copy",
     "delete" => "delete",
     "update" => "update",

@@ -52,7 +52,7 @@
         </section>
 
         @php
-            $album = \App\Models\Album::where(['status' => 1, 'id' => 7])->first();
+            $album = \App\Models\Frontend\Album::where(['status' => 1, 'id' => 7])->first();
         @endphp
 
         <section class="section-lg bg-light block2">
@@ -108,7 +108,7 @@
         </section>
 
         @php
-            $album = \App\Models\Album::where(['status' => 1, 'id' => 6])->first();
+            $album = \App\Models\Frontend\Album::where(['status' => 1, 'id' => 6])->first();
         @endphp
 
         <section class="section section-lg bg-light block3">

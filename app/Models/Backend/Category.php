@@ -88,24 +88,14 @@ class Category extends Model
         return $this->hasMany(Category::class, 'parent', 'id')->orderBy('sort');
     }
 
-    // public function children_type($type)
-    // {
-    //     return $this->hasMany(Category::class, 'parent', 'id')->where('type', $type)->orderBy('sort');
-    // }
-
     public function posts(): BelongsToMany
     {
         return $this->belongsToMany(Post::class, 'post_category', 'category_id', 'post_id');
     }
 
-    public function products(): BelongsToMany
-    {
-        return $this->belongsToMany(Product::class, 'product_category', 'category_id', 'product_id');
-    }
-
-    // public function admin(): BelongsTo
+    // public function products(): BelongsToMany
     // {
-    //     return $this->belongsTo(Admin::class, 'admin_id');
+    //     return $this->belongsToMany(Product::class, 'product_category', 'category_id', 'product_id');
     // }
 
     public function user(): BelongsTo

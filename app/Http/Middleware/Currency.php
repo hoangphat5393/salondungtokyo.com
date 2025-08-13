@@ -19,7 +19,7 @@ class Currency
     {
         $currency = session('currency') ?? setting_option('currency');
 
-        ShopCurrency::setCode($currency);
+        // ShopCurrency::setCode($currency);
         return $next($request);
     }
 }
