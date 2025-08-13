@@ -6,7 +6,7 @@ use Carbon\Carbon, Cart, Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\Category;
+use App\Models\Frontend\Category;
 use Gornymedia\Shortcodes\Facades\Shortcode;
 use App\Models\Frontend\Page as Page;
 
