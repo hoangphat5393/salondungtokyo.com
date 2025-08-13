@@ -44,7 +44,7 @@ class PageController extends Controller
         ];
 
         // return view($this->templatePath . '.home', $this->data)->compileShortcodes();
-        return view('theme.home', $this->data)->compileShortcodes();
+        return view('frontend.home', $this->data)->compileShortcodes();
     }
 
     public function page($slug)

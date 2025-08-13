@@ -59,7 +59,7 @@
     <link rel="stylesheet" href="{{ asset('assets/plugin/bootstrap4-toggle/bootstrap4-toggle.min.css') }}">
 
     {{-- Jquery UI --}}
-    <link rel="stylesheet" href="{{ asset('assets/plugin/jquery-ui/jquery-ui.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/plugin/jquery-ui/jquery-ui.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/plugin/jquery-confirm-v3.3.4/jquery-confirm.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugin/select2/css/select2.min.css') }}">
 
@@ -104,7 +104,6 @@
     <script src="{{ asset('assets/plugin/axios.min.js') }}"></script>
 
     {{-- begin::Third Party Plugin(OverlayScrollbars) --}}
-    {{-- <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/browser/overlayscrollbars.browser.es6.min.js" integrity="sha256-dghWARbRe2eLlIJ56wNB+b760ywulqK3DzZYEpsg2fQ=" crossorigin="anonymous"></script> --}}
     <script src="{{ asset('assets/plugin/overlayscrollbars@2.10.1/overlayscrollbars.browser.es6.min.js') }}"></script>
     {{-- end::Third Party Plugin(OverlayScrollbars) --}}
 
@@ -126,8 +125,6 @@
 
 
     {{-- jsvectormap --}}
-    {{-- <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js" integrity="sha256-/t1nN2956BT869E6H4V1dnt0X5pAQHPytli+1nTZm2Y=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js" integrity="sha256-XPpPaZlU8S/HWf7FZLAncLg2SAkP8ScUTII89x9D3lY=" crossorigin="anonymous"></script> --}}
     <script src="{{ asset('assets/plugin/jsvectormap/jsvectormap.js') }}"></script>
     <script src="{{ asset('assets/plugin/jsvectormap/world.js') }}"></script>
 
@@ -139,7 +136,7 @@
 
     <script src="{{ asset('assets/plugin/jquery-validation/jquery.validate.min.js') }}"></script>
 
-    {{-- <script src="{{ asset('assets/plugin/jquery-confirm-v3.3.4/jquery-confirm.min.js') }}"></script> --}}
+    <script src="{{ asset('assets/plugin/jquery-confirm-v3.3.4/jquery-confirm.min.js') }}"></script>
     <script src="{{ asset('assets/plugin/sweetalert2@11/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('assets/plugin/select2/js/select2.full.min.js') }}"></script>
 

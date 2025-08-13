@@ -51,29 +51,13 @@ $(function () {
                 },
                 No: {
                     class: 'gray',
-                    action: function () {}, // Nothing to do in this case. You can as well omit the action property.
+                    action: function () { }, // Nothing to do in this case. You can as well omit the action property.
                 },
             },
         });
     });
 
-    //Date range picker
-    $('#cus_from').datetimepicker({
-        format: 'YYYY-MM-DD',
-    });
-
-    $('#cus_to').datetimepicker({
-        format: 'YYYY-MM-DD',
-    });
-
-    $('#order_from').datetimepicker({
-        format: 'YYYY-MM-DD',
-    });
-
-    $('#order_to').datetimepicker({
-        format: 'YYYY-MM-DD',
-    });
-
+    // Date range picker
     $('.select2').select2();
     $('.multi-select2').select2();
 });
@@ -168,7 +152,7 @@ function delete_id(type) {
                 url: admin_url + '/delete-id',
                 data: arr, //pass the array to the ajax call
                 cache: false,
-                beforeSend: function () {},
+                beforeSend: function () { },
                 success: function () {
                     location.reload();
                 },
@@ -201,7 +185,7 @@ function replicate_id(type) {
                 url: admin_url + '/replicate-id',
                 data: arr, //pass the array to the ajax call
                 cache: false,
-                beforeSend: function () {},
+                beforeSend: function () { },
                 success: function () {
                     location.reload();
                 },
@@ -238,7 +222,7 @@ function update_theme_fast(product_id) {
             },
             dataType: 'text',
             cache: false,
-            beforeSend: function () {},
+            beforeSend: function () { },
             success: function (status) {
                 $('#alert_' + product_id).html(status);
                 $('#alert_' + product_id).show();
@@ -263,8 +247,8 @@ function new_item_click(product_id) {
             },
             dataType: 'text',
             cache: false,
-            beforeSend: function () {},
-            success: function (status) {},
+            beforeSend: function () { },
+            success: function (status) { },
         }); //ajax
     });
 }
@@ -286,8 +270,8 @@ function flash_sale_click(product_id) {
             },
             dataType: 'text',
             cache: false,
-            beforeSend: function () {},
-            success: function (status) {},
+            beforeSend: function () { },
+            success: function (status) { },
         }); //ajax
     });
 }
@@ -309,8 +293,8 @@ function sale_top_week_click(product_id) {
             },
             dataType: 'text',
             cache: false,
-            beforeSend: function () {},
-            success: function (status) {},
+            beforeSend: function () { },
+            success: function (status) { },
         }); //ajax
     });
 }
@@ -332,8 +316,8 @@ function propose_click(product_id) {
             },
             dataType: 'text',
             cache: false,
-            beforeSend: function () {},
-            success: function (status) {},
+            beforeSend: function () { },
+            success: function (status) { },
         }); //ajax
     });
 }
@@ -355,8 +339,8 @@ function store_status_click(product_id) {
             },
             dataType: 'text',
             cache: false,
-            beforeSend: function () {},
-            success: function (status) {},
+            beforeSend: function () { },
+            success: function (status) { },
         }); //ajax
     });
 }

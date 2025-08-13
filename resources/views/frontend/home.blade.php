@@ -5,13 +5,14 @@
 @endphp
 
 
-@extends('theme.layouts.index')
-
-
+@extends('frontend.layouts.master')
 @section('seo')
-    @php $seo['seo_type'] = 'website';@endphp
-    @include('theme.layouts.seo', $seo ?? [])
+    @php
+        $seo['seo_type'] = 'website';
+    @endphp
+    @include('frontend.layouts.seo', $seo ?? [])
 @endsection
+
 
 
 @push('lib-style')
@@ -33,7 +34,7 @@
 
 @section('content')
 
-    @include('theme.layouts.menu')
+    @include('frontend.layouts.menu')
 
     <main id="home">
 
@@ -235,10 +236,10 @@
         </section>
 
         {{-- Partner (block5) --}}
-        {{-- @include('theme.includes.partner') --}}
+        {{-- @include('frontend.includes.partner') --}}
 
         {{-- Subscribe --}}
-        {{-- @include('theme.includes.subscribe') --}}
+        {{-- @include('frontend.includes.subscribe') --}}
     </main>
 @endsection
 
