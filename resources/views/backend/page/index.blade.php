@@ -58,7 +58,9 @@
                         {{-- body --}}
                         <div class="card-body">
                             <div class="d-flex flex-column flex-lg-row justify-content-between">
+
                                 @include('backend.partials.button_add_delete', ['type' => 'page', 'route' => route('admin.page.create')])
+
                                 <div>
                                     <form method="GET" action="" id="frm-filter-post" class="form-inline">
                                         <div class="input-group">
@@ -73,7 +75,7 @@
 
                             <div class="d-flex justify-content-between align-items-center my-4">
                                 <div>
-                                    <b>@lang('admin.total')</b>: <span class="fw-bold text-red">{{ $total_item ?? 0 }}</span> @lang('admin.page')
+                                    <b>@lang('admin.total')</b>: <span class="fw-bold text-red">{{ $total_item ?? 0 }}</span> @lang('admin.news')
                                 </div>
                             </div>
 
@@ -87,11 +89,10 @@
                                                     <label for="selectall"></label>
                                                 </div>
                                             </th>
-                                            <th scope="col" class="text-center" style="width:45px">#</th>
                                             <th scope="col" class="text-center" style="width:100px">@lang('admin.sort')</th>
                                             <th scope="col" class="text-center">@lang('admin.name')</th>
                                             <th scope="col" class="text-center">@lang('admin.thumbnail')</th>
-                                            <th scope="col" class="text-center">@lang('admin.created by')</th>
+                                            <th class="text-center">@lang('admin.created by')</th>
                                             <th scope="col" class="text-center">@lang('admin.created date')</th>
                                         </tr>
                                     </thead>

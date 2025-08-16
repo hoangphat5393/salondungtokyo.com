@@ -6,9 +6,10 @@ use Carbon\Carbon, Cart, Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\Frontend\Category;
 use Gornymedia\Shortcodes\Facades\Shortcode;
-use App\Models\Frontend\Page as Page;
+use App\Models\Backend\Category;
+use App\Models\Frontend\Page;
+use App\Models\Frontend\Product;
 
 class PageController extends Controller
 {
@@ -19,38 +20,33 @@ class PageController extends Controller
     // $this->templatePath
     public function index()
     {
-        // $this->localized();
         $page = Page::where('slug', 'home')->first();
         $this->data['page'] = $page;
 
+        // $this->data['categories'] = Category::where('status', 1)
+        //     ->where(['type' => 'product', 'parent' => 0])
+        //     ->orderby('sort', 'asc')
+        //     ->get();
 
-        $this->data['categories'] = Category::where('status', 1)
-            ->where('type', 'product')
-            ->where('parent', 0)
-            ->orderby('sort', 'asc')
-            ->get();
-
-        // $this->data['products'] = \App\Product::orderbyDesc('id')->limit(5)->get();
+        // $this->data['products'] = \App\Models\Frontend\Product::orderbyDesc('id')->limit(5)->get();
 
         // $this->data['flash_sale'] = (new Product)->FlashSale();
 
         $this->data['page'] = $page;
 
         $this->data['seo'] = [
-            'seo_title' => $page->seo_title ?? '',
-            'seo_image' => $page->image ?? '',
-            'seo_description'   => $page->seo_description ?? '',
-            'seo_keyword'   => $page->seo_keyword ?? '',
+            'seo_title' =>  $page->seo_title ?? $page->title,
+            'seo_image' => $page->image,
+            'seo_description' => $page->seo_description ?? '',
+            'seo_keyword' => $page->seo_keyword ?? '',
         ];
 
-        // return view($this->templatePath . '.home', $this->data)->compileShortcodes();
         return view('frontend.home', $this->data)->compileShortcodes();
     }
 
     public function page($slug)
     {
-        // $this->localized();
-        if ('home' == $slug || 'trangchu' == $slug) {
+        if ('home' == $slug || 'trang-chu' == $slug) {
             return $this->index();
         }
 
@@ -76,16 +72,38 @@ class PageController extends Controller
             ];
 
             $this->data['page'] = $page;
-            $templateName = $this->templatePath . '.page.' . $slug;
+            if ($page->type == 'landing_page') {
+                $templateName = 'frontend.landing.';
+            } else
+                $templateName =  'frontend.page.';
 
-            if (View::exists($templateName)) {
-                return view($templateName,  $this->data)->compileShortcodes();
+
+            $fileName = $templateName . $slug;
+            // if (!file_exists(public_path($fileName))) {
+            // }
+
+            // dd($fileName);
+
+            if (View::exists($fileName)) {
+                return view($fileName,  $this->data)->compileShortcodes();
             } else {
-                return view($this->templatePath . '.page.index', ['data' => $this->data])->compileShortcodes();
+                $fileName = $templateName . 'page-' . $page->id;
+
+                if (View::exists($fileName)) {
+                    return view($fileName,  $this->data)->compileShortcodes();
+                } else {
+                    return view('frontend.page.index', ['data' => $this->data])->compileShortcodes();
+                }
             }
         } else {
-            return view('errors.404');
+            // return view('errors.404');
+            return redirect(route('index'));
         }
+    }
+
+    public function testPage()
+    {
+        return view('frontend.test')->compileShortcodes();
     }
 
     // public function product($slug)
@@ -95,20 +113,13 @@ class PageController extends Controller
     //     ]);
     // }
 
-    // public function about($slug)
+    // public function listLocation()
     // {
-    //     return \App::call('App\Http\Controllers\AboutController@index',  [
-    //         "slug" => $slug
-    //     ]);
+    //     $data = array(
+    //         'mienbac'   => 'Miền Bắc',
+    //         'mientrung'   => 'Miền Trung',
+    //         'miennam'   => 'Miền Nam'
+    //     );
+    //     return $data;
     // }
-
-    public function listLocation()
-    {
-        $data = array(
-            'mienbac'   => 'Miền Bắc',
-            'mientrung'   => 'Miền Trung',
-            'miennam'   => 'Miền Nam'
-        );
-        return $data;
-    }
 }

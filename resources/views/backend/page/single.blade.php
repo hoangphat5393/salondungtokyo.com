@@ -85,6 +85,9 @@
                                 <div class="mb-3">
                                     <label for="slug" class="form-label">@lang('admin.slug')</label>
                                     <input type="text" class="form-control" id="slug" name="slug" placeholder="slug" value="{{ $slug ?? '' }}">
+                                    {{-- <div id="nameHelp" class="form-text">
+                                        We'll never share your email with anyone else.
+                                    </div> --}}
 
                                     @if ($id > 0)
                                         <p class="my-2">
@@ -94,12 +97,12 @@
                                     @endif
                                 </div>
 
-                                <ul class="nav nav-tabs mb-3" id="nav-tab tabLang" role="tablist">
+                                <ul class="nav nav-tabs d-none" id="tabLang" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="vi-tab" data-bs-toggle="tab" href="#vi" role="tab" aria-controls="vi" aria-selected="true">@lang('admin.Vietnamese')</a>
+                                        <a class="nav-link active" id="vi-tab" data-toggle="tab" href="#vi" role="tab" aria-controls="vi" aria-selected="true">@lang('admin.Vietnamese')</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="en-tab" data-bs-toggle="tab" href="#en" role="tab" aria-controls="en" aria-selected="false">@lang('admin.English')</a>
+                                        <a class="nav-link" id="en-tab" data-toggle="tab" href="#en" role="tab" aria-controls="en" aria-selected="false">@lang('admin.English')</a>
                                     </li>
                                 </ul>
 
@@ -112,21 +115,8 @@
                                         </div>
 
                                         @php
-                                            $quote_arr = ['id' => 'description', 'label' => __('admin.description'), 'name' => 'description', 'description' => $description ?? ''];
+                                            $quote_arr = ['id' => 'description', 'label' => 'Description', 'name' => 'description', 'description' => $description ?? ''];
                                             $content_arr = ['id' => 'content', 'label' => __('admin.content'), 'name' => 'content', 'content' => $content ?? ''];
-                                        @endphp
-                                        @include('backend.partials.quote', $quote_arr)
-                                        @include('backend.partials.content', $content_arr)
-                                    </div>
-
-                                    <div class="tab-pane fade" id="en" role="tabpanel" aria-labelledby="en-tab">
-                                        <div class="mb-3">
-                                            <label for="name_en" class="form-label">@lang('admin.name')</label>
-                                            <input type="text" class="form-control" id="name_en" name="name_en" placeholder="Name EN" value="{{ $name_en ?? '' }}">
-                                        </div>
-                                        @php
-                                            $quote_arr = ['id' => 'description_en', 'label' => __('admin.description'), 'name' => 'description_en', 'description' => $description_en ?? ''];
-                                            $content_arr = ['id' => 'content_en', 'label' => __('admin.content'), 'name' => 'content_en', 'content' => $content_en ?? ''];
                                         @endphp
                                         @include('backend.partials.quote', $quote_arr)
                                         @include('backend.partials.content', $content_arr)

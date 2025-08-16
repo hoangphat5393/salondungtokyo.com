@@ -14,17 +14,15 @@
 
             <td class="title">
                 <a class="row-title " href="{{ route('admin.page.edit', [$item->id]) }}">
-                    <div>
-                        <strong style="color: #056FAD;">
+                    <div><b style='color: #056FAD;'>
                             {{ $item->name }}
                             {{-- | {{ $item->name_en }}</b> --}}
-                        </strong>
                     </div>
                 </a>
                 @if ($item->slug)
                     <div>
-                        <b style="color:#777;">URL:</b>
-                        <a style="color:#00C600; word-break:break-all;" class="" target='_blank' href="{{ route('page', ['slug' => $item->slug]) }}">{{ route('page', ['slug' => $item->slug]) }}</a>
+                        <b style='color:#777;'>URL:</b>
+                        <a style='color:#00C600; word-break:break-all;' target='_blank' href="{{ route('page', ['slug' => $item->slug]) }}">{{ route('page', ['slug' => $item->slug]) }}</a>
                     </div>
                     {{--
                     <div>
@@ -38,7 +36,7 @@
             </td>
             <td class="text-center">
                 @if ($item->admin)
-                    <div class="w-fit-content mx-auto">{{ $item->user->name }}</div>
+                    <div class="w-fit-content mx-auto">{{ $item->admin->name }}</div>
                 @endif
             </td>
             <td class="text-center">

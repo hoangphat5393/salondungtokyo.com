@@ -6,31 +6,25 @@ use App\Http\Controllers\Controller;
 use App\Models\Backend\Page;
 use App\Http\Requests\StorePageRequest;
 use App\Http\Requests\UpdatePageRequest;
+use App\Libraries\Helpers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
-// Export
-// use Excel;
-use App\Exports\ExportPage;
-use Maatwebsite\Excel\Facades\Excel;
 
 class PageController extends Controller
 {
     public $data = [];
+
+    public $page_type = ['post', 'page'];
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $pages = Page::filter($request)->where(['type' => 'page'])
-            ->orderBydesc('id')
-            ->orderBydesc('name')
-            ->orderBy('sort', 'asc')
-            ->paginate(50)
-            ->appends($request->all());
+        $pages = Page::filter($request)->orderByDesc('sort')->where('type', 'page')->paginate(20)->appends($request->all());
 
         $total_item = $pages->count();
 
@@ -42,7 +36,7 @@ class PageController extends Controller
      */
     public function create()
     {
-        return view('backend.page.single');
+        return view('backend.page.single', ['page_type' => $this->page_type]);
     }
 
     /**
@@ -50,7 +44,6 @@ class PageController extends Controller
      */
     public function store(StorePageRequest $request)
     {
-
         $data = $request->except(['created_at', 'submit']);
 
         if ($request->slug) {
@@ -59,6 +52,8 @@ class PageController extends Controller
             $data['slug'] = Str::slug($data['name']);
         }
         $data['seo_title'] = $data['seo_title'] ? $data['seo_title'] : $data['name'];
+
+        $data['type'] = 'page';
 
         // ADMIN ID
         $data['user_id'] = Auth::guard('admin')->user()->id;
@@ -70,36 +65,11 @@ class PageController extends Controller
         // Update sort
         $response->update(['sort' => $insert_id]);
 
-        // dd($response);
-
-        // Tạo file blade
-        $fileName = "page-{$insert_id}.blade.php";
-        $filePath = resource_path("views/frontend/page/{$fileName}");
-
-        // Kiểm tra nếu file đã tồn tại, nếu chưa có thì tạo file
-        if (!File::exists($filePath)) {
-
-            // Nội dung mặc định trong file
-            // $fileContent = "@extends('frontend.layouts.master')\n\n@section('content')\n<h1>{$response->name}</h1>\n{!! $response->content !!}\n@endsection";
-            $fileContent = "@extends('frontend.layouts.master')\n\n@section('content')\n<h1>{$response->name}</h1>\n{$response->content}\n@endsection";
-
-            // dd($fileName, $filePath, $fileContent);
-
-            // Tạo thư mục nếu chưa tồn tại
-            File::ensureDirectoryExists(resource_path('views/frontend/page'));
-
-            // Ghi nội dung vào file
-            File::put($filePath, $fileContent);
-        }
-
         $save = $request->submit ?? 'apply';
         if ($save == 'apply') {
-            $msg = "Page has been created successfully!";
-            // $url = route('admin.page.edit', $insert_id);
-            // Helpers::msg_move_page($msg, $url);
-
-            // Redirect to detail
-            return redirect()->route('admin.page.edit', $insert_id)->with('success', $msg);
+            $msg = "Page has been created successfully";
+            $url = route('admin.page.edit', array($insert_id));
+            Helpers::msg_move_page($msg, $url);
         } else {
             return redirect(route('admin.page.index'));
         }
@@ -120,9 +90,9 @@ class PageController extends Controller
     public function edit(Page $page, $id)
     {
         $page = $page->findorfail($id);
-
+        $page_type = $this->page_type;
         if ($page) {
-            return view('backend.page.single', compact('page'));
+            return view('backend.page.single', compact('page', 'page_type'));
         } else {
             return view('404');
         }
@@ -133,7 +103,7 @@ class PageController extends Controller
      */
     public function update(UpdatePageRequest $request, Page $page)
     {
-        $data = request()->except(['created_at', 'submit']);
+        $data = request()->except(['created_at', 'submit', 'admin_id']);
 
         if ($request->slug) {
             $data['slug'] = addslashes($request->slug);
@@ -141,16 +111,15 @@ class PageController extends Controller
             $data['slug'] = Str::slug($data['name']);
         }
 
+        $data['type'] = 'page';
+
         $page = Page::findOrFail($request->id);
         $page->update($data);
 
         if ($request->submit_form == 'apply') {
             $msg = "Page has been updated successfully";
-            // $url = route('admin.page.edit', $request->id);
-            // Helpers::msg_move_page($msg, $url);
-
-            // Redirect to detail
-            return redirect()->route('admin.page.edit', $request->id)->with('success', $msg);
+            $url = route('admin.page.edit', array($request->id));
+            Helpers::msg_move_page($msg, $url);
         } else {
             return redirect(route('admin.page.index'));
         }
@@ -163,21 +132,5 @@ class PageController extends Controller
     {
         $page->find($id)->delete();
         return redirect()->route('admin.page.index')->with('success', 'Page deleted successfully.');
-    }
-
-    public function export()
-    {
-        // $point = [
-        //     [1, 2, 3],
-        //     [2, 5, 9]
-        // ];
-        // $data = (object) array(
-        //     'points' => $point,
-        //     'news' => $point,
-        // );
-        // $export = new ExportPage([$data]);
-
-        // return Excel::download($export, 'test.xlsx');
-        return Excel::download(new ExportPage, 'test.xlsx');
     }
 }
