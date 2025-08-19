@@ -31,7 +31,7 @@ class ShortcodeServiceProvider extends ServiceProvider
                 'items' => $items
             ], $atts);
 
-            $slider = \App\Models\Album::find($data['id']);
+            $slider = \App\Models\Frontend\Album::find($data['id']);
             // $image_list = \App\Models\AlbumItem::where('album_id', $data['id'])->limit($data['items'])->get();
 
             // dd($slider);

@@ -180,20 +180,20 @@
                                 <i class="far fa-2x fa-fw fa-phone"></i>
                             </dt>
                             <dd class="col-sm-9">
-                                <h4><a href="tel:0908691696">090 869 16 96</a></h4>
+                                <h4><a href="tel:{{ setting_option('phoner') }}">{{ setting_option('phone') }}</a></h4>
                             </dd>
 
                             <dt class="col-sm-3">
                                 <i class="far fa-2x fa-fw fa-map"></i>
                             </dt>
                             <dd class="col-sm-9">
-                                <h4><a href="#">46 Đ. Số 8, Phường 11, Gò Vấp, Thành phố Hồ Chí Minh</a></h4>
+                                <h4><a href="#">{{ setting_option('address') }}</a></h4>
                             </dd>
                             <dt class="col-sm-3">
                                 <i class="far fa-2x fa-fw fa-paper-plane"></i>
                             </dt>
                             <dd class="col-sm-9">
-                                <h4><a href="mailto:dungocean82@gmail.com">dungocean82@gmail.com</a></h4>
+                                <h4><a href="mailto:{{ setting_option('email') }}">{{ setting_option('email') }}</a></h4>
                             </dd>
                         </dl>
                     </div>

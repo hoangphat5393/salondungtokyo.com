@@ -66,13 +66,21 @@ class PageController extends Controller
         $response->update(['sort' => $insert_id]);
 
         $save = $request->submit ?? 'apply';
+
         if ($save == 'apply') {
-            $msg = "Page has been created successfully";
-            $url = route('admin.page.edit', array($insert_id));
-            Helpers::msg_move_page($msg, $url);
+            return redirect(route('admin.page.edit', $insert_id));
         } else {
             return redirect(route('admin.page.index'));
         }
+
+        // if ($save == 'apply') {
+        //     $msg = "Page has been created successfully";
+        //     $url = route('admin.page.edit', array($insert_id));
+        //     Helpers::msg_move_page($msg, $url);
+        // } else {
+        //     return redirect(route('admin.page.index'));
+        // }
+
     }
 
     /**

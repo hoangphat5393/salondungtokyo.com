@@ -1,8 +1,7 @@
 @extends('backend.layouts.master')
 @section('seo')
     @php
-        $lc = app()->getLocale();
-        $title_head = __('admin.News');
+        $title_head = __('admin.news');
         $seo = [
             'title' => $title_head,
             'keywords' => '',
@@ -17,6 +16,7 @@
     @endphp
     @include('backend.partials.seo')
 @endsection
+
 
 @section('content')
     {{-- begin::App Content Header --}}
@@ -37,7 +37,6 @@
     </div>
     {{-- end::App Content Header --}}
 
-
     {{-- begin::App Content --}}
     <div class="app-content">
         <div class="container-fluid">
@@ -49,47 +48,38 @@
                     {{-- card --}}
                     <div class="card card-primary card-outline mb-4">
 
-                        {{-- header --}}
+                        {{-- card-header --}}
                         <div class="card-header">
-                            <h3 class="card-title">{{ $title_head }} List</h3>
+                            <h3 class="card-title">List</h3>
                         </div>
 
-                        {{-- body --}}
+                        {{-- card-body --}}
                         <div class="card-body">
 
                             <div class="d-flex flex-column flex-lg-row justify-content-between">
 
                                 @include('backend.partials.button_add_delete', ['type' => 'post', 'route' => route('admin.post.create')])
 
-                                <div class="w-lg-50 mt-3 mt-lg-0">
+                                <div>
                                     <form method="GET" action="" id="frm-filter-post" class="form-inline">
-                                        <div class="d-flex">
-                                            @php
-                                                $categories = App\Models\Backend\Category::select('id', 'name')->where('type', 'post')->orderByDesc('sort')->get();
-                                            @endphp
-                                            <select class="form-select custom-select me-2" name="category_id">
-                                                <option value="">@lang('admin.category')</option>
-                                                @foreach ($categories as $item)
-                                                    <option value="{{ $item->id }}" {{ request('category_id') == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" name="name" id="name" placeholder="@lang('admin.Keyword')" value="{{ request('name') }}">
-                                                <button type="submit" class="btn btn-outline-primary" id="button-addon2"><i class="fa-regular fa-magnifying-glass"></i> @lang('admin.Search')</button>
-                                            </div>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="name" name="name" placeholder="@lang('admin.name')" aria-label="@lang('admin.keyword')" aria-describedby="name" value="{{ request('name') }}">
+                                            <button class="btn btn-outline-primary" type="submit" id="button-addon2">
+                                                <i class="fa-regular fa-magnifying-glass"></i> @lang('admin.search')
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
 
-                            <div class="d-flex justify-content-between align-items-center my-4">
+                            <div class="d-flex align-items-center justify-content-between my-4">
                                 <div>
                                     <b>@lang('admin.total')</b>: <span class="fw-bold text-red">{{ $total_item ?? 0 }}</span> @lang('admin.news')
                                 </div>
                             </div>
 
                             <div class="table-responsive">
-                                <table class="table table-bordered list-data v-center" id="table_index">
+                                <table class="table table-bordered list-data" id="table_index">
                                     <thead>
                                         <tr>
                                             <th class="text-center" style="width:50px">
@@ -98,78 +88,55 @@
                                                     <label for="selectall"></label>
                                                 </div>
                                             </th>
-                                            <th scope="col" class="text-center" style="width:45px">#</th>
-                                            <th scope="col" class="text-center" style="width:90px">@lang('admin.sort')</th>
-                                            <th scope="col" class="text-center">@lang('admin.name')</th>
-                                            <th scope="col" class="text-center">@lang('admin.thumbnail')</th>
-                                            <th scope="col" class="text-center">@lang('admin.category')</th>
-                                            <th scope="col" class="text-center">@lang('admin.created by')</th>
-                                            <th scope="col" class="text-center">@lang('admin.created date')</th>
+                                            <th style="width: 10px">#</th>
+                                            <th class="text-center" style="width:100px">@lang('admin.priority')</th>
+                                            <th class="text-center">@lang('admin.name')</th>
+                                            <th class="text-center">@lang('admin.thumbnail')</th>
+                                            <th class="text-center">@lang('admin.created by')</th>
+                                            <th class="text-center">@lang('admin.created date')</th>
                                         </tr>
                                     </thead>
+
                                     <tbody>
                                         @foreach ($posts as $item)
-                                            <tr>
+                                            <tr class="align-middle">
                                                 <td class="text-center">
                                                     <div class="icheck-info d-inline">
                                                         <input type="checkbox" id="{{ $item->id }}" name="seq_list[]" value="{{ $item->id }}">
                                                         <label for="{{ $item->id }}"></label>
                                                     </div>
                                                 </td>
-                                                <td class="text-center">
-                                                    {{ $item->id }}
-                                                </td>
+                                                <td>{{ $item->id }}.</td>
                                                 <td class="text-center">
                                                     <input type="text" id="sort" class="form-control quick_change_value text-center" data-id="{{ $item->id }}" data-model="{{ get_class($item) }}" value="{{ $item->sort }}" reload-on-change>
                                                 </td>
                                                 <td>
                                                     <a class="row-title fw-bold" href="{{ route('admin.post.edit', $item->id) }}">
-                                                        {{ $item->name }} | {{ $item->name_en }}
+                                                        {{ $item->name }}
                                                     </a>
-
-                                                    @if ($item->slug)
-                                                        <div>
-                                                            <b style="color:#777;">URL:</b>
-                                                            <a style="color:#00C600;" class="text-break" target='_blank' href="{{ route('news.detail', [$item->slug, $item->id]) }}">
-                                                                <span>URL VI: </span>{{ route('news.detail', [$item->slug, $item->id]) }}
-                                                            </a>
-                                                        </div>
-                                                        <div>
-                                                            <b style='color:#777;'>URL EN:</b>
-                                                            <a style="color:#00C600;" class="text-break" target='_blank' href="{{ route('news.detail', [$item->slug, $item->id], true, 'en') }}">
-                                                                <span>URL EN: </span>{{ route('news.detail', [$item->slug, $item->id], true, 'en') }}
-                                                            </a>
-                                                        </div>
-                                                    @endif
+                                                    <br>
+                                                    <a class="fw-bold text-danger" href="{{ route('news.detail', [$item->slug, $item->id]) }}" target="_blank">
+                                                        <span>URL: </span>{{ route('news.detail', [$item->slug, $item->id]) }}
+                                                    </a>
                                                 </td>
+
                                                 <td class="text-center">
                                                     <img src="{{ get_image($item->image) }}" style="height: 70px;">
                                                 </td>
                                                 <td class="text-center">
-                                                    @php
-                                                        $categories = $item->categories;
-                                                    @endphp
-                                                    @foreach ($categories as $k => $category)
-                                                        <a class="link" target="_blank" href="{{ route('admin.post-category.edit', $category->id) }}">{{ $category->name }} | {{ $category->name_en }}</a></br>
-                                                    @endforeach
-                                                </td>
-
-                                                <td class="text-center">
-                                                    @if ($item->user)
-                                                        <span class="badge text-bg-primary">{{ $item->user->name }}</span>
-                                                    @endif
+                                                    <div class="w-fit-content mx-auto">{{ $item->user->name }}</div>
                                                 </td>
                                                 <td class="text-center">
                                                     {{ $item->updated_at }}
                                                     <br>
                                                     <input type="checkbox" id="status" class="quick_change_value" @checked($item->status == 1) value="1" value-off="0" data-id="{{ $item->id }}" data-model="{{ get_class($item) }}" data-toggle="toggle" data-on="@lang('admin.publish')" data-off="@lang('admin.draft')" data-onstyle="success" data-offstyle="light">
+                                                    {{-- <a href="{{ route('admin.post.destroy', $item->id) }}" class="btn btn-danger"><i class="fa-duotone fa-trash"></i></a> --}}
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
 
                         {{-- card-footer --}}

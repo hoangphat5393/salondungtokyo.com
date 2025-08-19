@@ -62,8 +62,6 @@ class AlbumController extends Controller
 
         $save = $request->submit ?? 'apply';
         if ($save == 'apply') {
-            // $msg = "Album has been created successfully";
-            // $url = route('admin.album.edit', $insert_id);
             return redirect(route('admin.album.edit', $insert_id));
         } else {
             return redirect(route('admin.album.index'));
