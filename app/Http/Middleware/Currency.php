@@ -17,7 +17,7 @@ class Currency
      */
     public function handle($request, Closure $next)
     {
-        $currency = session('currency') ?? setting_option('currency');
+        // $currency = session('currency') ?? setting_option('currency');
 
         // ShopCurrency::setCode($currency);
         return $next($request);

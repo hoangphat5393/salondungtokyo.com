@@ -34,6 +34,7 @@ class PageController extends Controller
 
         $this->data['page'] = $page;
 
+
         $this->data['seo'] = [
             'seo_title' =>  $page->seo_title ?? $page->title,
             'seo_image' => $page->image,
