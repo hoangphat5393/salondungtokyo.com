@@ -50,6 +50,7 @@ package-lock.json
 
 
 # Ignore test environment files
+.env
 .env.testing
 phpunit.xml
 phpunit.xml.dist
