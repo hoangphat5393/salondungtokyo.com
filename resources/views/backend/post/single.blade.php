@@ -92,7 +92,7 @@
                                     @if ($id > 0)
                                         <p class="my-2">
                                             <strong class="text-primary">Link Vi:</strong>
-                                            <u><i><a href="{{ route('news.detail', $slug) }}" target="_blank" class="text-red">{{ route('news.detail', $slug) }}</a></i></u>
+                                            <u><i><a href="{{ route('news.detail', [$slug, $id]) }}" target="_blank" class="text-red">{{ route('news.detail', [$slug, $id]) }}</a></i></u>
                                         </p>
                                     @endif
                                 </div>

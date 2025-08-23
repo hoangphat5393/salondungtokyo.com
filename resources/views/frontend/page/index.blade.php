@@ -1,9 +1,9 @@
 @php extract($data); @endphp
 
-@extends($templatePath . '.layouts.index')
+@extends('frontend.layouts.master')
 
 @section('seo')
-    @include($templatePath . '.layouts.seo', $seo ?? [])
+    @include('frontend.layouts.seo', $seo ?? [])
 @endsection
 
 @section('content')

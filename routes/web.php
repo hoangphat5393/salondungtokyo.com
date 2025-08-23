@@ -189,22 +189,14 @@ foreach ($module as $item) {
 // Route::get('news.html', '\App\Http\Controllers\NewsController@index')->name('news');
 
 // // News detail
-// Route::get('news/{slug}-{id}.html', '\App\Http\Controllers\NewsController@newsDetail')
-//     ->where(['slug' => '[a-zA-Z0-9$-_.+!]+', 'id' => '[0-9]+'])
-//     ->name('news.detail');
+Route::get('news/{slug}-{id}.html', '\App\Http\Controllers\NewsController@newsDetail')
+    ->where(['slug' => '[a-zA-Z0-9$-_.+!]+', 'id' => '[0-9]+'])
+    ->name('news.detail');
 
 // // News category
 // Route::get('news/{slug}.html', '\App\Http\Controllers\NewsController@index')
 //     ->where(['slug' => '[a-zA-Z0-9$-_.+!]+'])
 //     ->name('news.category');
-
-// // Work
-// Route::get('works.html', '\App\Http\Controllers\WorksController@index')->name('works');
-
-// // Work detail
-// Route::get('work/{slug}-{id}.html', '\App\Http\Controllers\WorksController@workDetail')
-//     ->where(['slug' => '[a-zA-Z0-9$-_.+!]+', 'id' => '[0-9]+'])
-//     ->name('work.detail');
 
 // Contact
 Route::get('contact.html', 'ContactController@index')->name('contact.index');
