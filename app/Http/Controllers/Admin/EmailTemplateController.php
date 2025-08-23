@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Backend\EmailTemplate;
 use App\Http\Requests\StoreEmailTemplateRequest;
 use App\Http\Requests\UpdateEmailTemplateRequest;
+use App\Libraries\Helpers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,8 +42,11 @@ class EmailTemplateController extends Controller
     {
         $data = request()->except(['category_id', 'created_at', 'submit']);
 
-        // $data['description'] = $data['description'] ? htmlspecialchars($data['description']) : '';
-        // $data['content'] = $data['content'] ? htmlspecialchars($data['content']) : '';
+        $data['description'] = $data['description'] ? htmlspecialchars($data['description']) : '';
+        $data['content'] = $data['content'] ? htmlspecialchars($data['content']) : '';
+
+        // ADMIN ID
+        $data['admin_id'] = Auth::guard('admin')->user()->id;
 
         $shortcode = EmailTemplate::create($data);
         $insert_id = $shortcode->id;
@@ -53,8 +57,9 @@ class EmailTemplateController extends Controller
         $save = $request->submit ?? 'apply';
 
         if ($save == 'apply') {
-            // $msg = "Email template has been created successfully";
-            return redirect('admin.email-template.edit', array($insert_id));
+            $msg = "Email template has been created successfully";
+            $url = route('admin.email-template.edit', array($insert_id));
+            Helpers::msg_move_page($msg, $url);
         } else {
             return redirect(route('admin.email-template.index'));
         }
@@ -97,7 +102,9 @@ class EmailTemplateController extends Controller
         $save = $request->submit ?? 'apply';
 
         if ($save == 'apply') {
-            return redirect('admin.email-template.edit', array($request->id));
+            $msg = "Email template has been updated successfully";
+            $url = route('admin.email-template.edit', array($request->id));
+            Helpers::msg_move_page($msg, $url);
         } else {
             return redirect(route('admin.email-template.index'));
         }
@@ -117,14 +124,11 @@ class EmailTemplateController extends Controller
         return  [
             'contact' => 'Inform contact to user',
             'contact_admin' => 'Inform contact to admin',
-            'contact_medial' => 'Thông báo liên hệ tư vấn gói khám tới Admin',
-            'contact_drfitness' => 'Thông báo liên hệ tư vấn gói tập gym tới Admin',
             'contact_setup' => 'Inform setup to admin',
             'transaction_register' => 'Inform transaction register to user',
             'transaction_register_admin' => 'Inform transaction register to admin',
             'purchase' => 'Inform purchase to user',
             'purchase_admin' => 'Inform purchase to admin',
-            'recruitment_admin' => 'Application notification to admin',
             // 'order_payment_success' => 'Thông báo thanh toán thành công',
             // 'order_to_admin' => 'Thông báo có đơn hàng tới Admin',
             // 'order_to_user' => 'Thông báo có đơn hàng tới User',

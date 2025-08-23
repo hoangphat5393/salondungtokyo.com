@@ -60,8 +60,8 @@ class AjaxController extends Controller
             $arr[] = (int)$check_data[$i];
         }
 
-        if ($type == 'post' || $type == 'campagin') {
-            $type = 'post';
+        if ($type == 'page' || $type == 'post') {
+            $type = 'page';
         }
 
         switch ($type) {
@@ -178,14 +178,6 @@ class AjaxController extends Controller
 
                 // SET AUTO_INCREMENT TO 1
                 $table = (new Recruitment)->getTable();
-                DB::statement("ALTER TABLE $table AUTO_INCREMENT = 1;");
-                return 1;
-                break;
-            case 'subscription':
-                Subscription::whereIn('id', $arr)->delete();
-
-                // SET AUTO_INCREMENT TO 1
-                $table = (new Subscription)->getTable();
                 DB::statement("ALTER TABLE $table AUTO_INCREMENT = 1;");
                 return 1;
                 break;

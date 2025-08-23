@@ -58,7 +58,7 @@
 
                             <div class="d-flex flex-column flex-lg-row justify-content-between">
 
-                                @include('backend.partials.button_add_delete', ['type' => 'post', 'route' => route('admin.post.create')])
+                                @include('backend.partials.button_add_delete', ['type' => 'page', 'route' => route('admin.post.create')])
 
                                 <div>
                                     <form method="GET" action="" id="frm-filter-post" class="form-inline">

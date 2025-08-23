@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePermissionRequest;
 use App\Http\Requests\UpdatePermissionRequest;
 use App\Models\Backend\Addtocard, App\Models\Backend\Permission;
+use App\Libraries\Helpers;
 
 class PermissionController extends Controller
 {
@@ -24,7 +25,6 @@ class PermissionController extends Controller
     public function __construct()
     {
         $routes = app()->routes->getRoutes();
-
         foreach ($routes as $route) {
             if (Str::startsWith($route->uri(), SC_ADMIN_PREFIX)) {
                 $prefix = SC_ADMIN_PREFIX ? $route->getPrefix() : ltrim($route->getPrefix(), '/');
@@ -46,9 +46,6 @@ class PermissionController extends Controller
                 }
             }
         }
-
-        // dd($routeAdmin);
-
         // dd($routeAdmin);
         $this->data['routeAdmin'] = $routeAdmin;
         $this->template = 'admin.permission';
@@ -87,10 +84,10 @@ class PermissionController extends Controller
             $data,
             [
                 'name' => 'required|string|max:50|unique:"' . Permission::class . '",name,' . $request->id . '',
-                // 'slug' => 'required|regex:/(^([0-9A-Za-z\._\-]+)$)/|unique:"' . Permission::class . '",slug,' . $request->id . '|string|max:50|min:3',
+                'slug' => 'required|regex:/(^([0-9A-Za-z\._\-]+)$)/|unique:"' . Permission::class . '",slug,' . $request->id . '|string|max:50|min:3',
             ],
             [
-                // 'slug.regex' => __('admin.permission.slug_validate'),
+                'slug.regex' => __('admin.permission.slug_validate'),
             ]
         );
 
@@ -100,7 +97,7 @@ class PermissionController extends Controller
         //         ->withInput();
         // }
 
-        // $data['slug'] = Str::slug($data['name']);
+        $data['slug'] = Str::slug($data['name']);
         $data['http_uri'] = implode(',', ($data['http_uri'] ?? []));
 
         // Edit
@@ -112,8 +109,9 @@ class PermissionController extends Controller
 
         $save = $request->submit ?? 'apply';
         if ($save == 'apply') {
-            // $msg = "Permission has been created successfully";
-            return redirect(route('admin.permission.edit', array($insert_id)));
+            $msg = "Permission has been created successfully";
+            $url = route('admin.permission.edit', array($insert_id));
+            Helpers::msg_move_page($msg, $url);
         } else {
             return redirect(route('admin.permission.index'));
         }
@@ -149,18 +147,16 @@ class PermissionController extends Controller
      */
     public function update(UpdatePermissionRequest $request, Permission $permission)
     {
-        // $data = request()->all();
-
-        $data = $request->except(['submit']);
+        $data = request()->all();
 
         $validator = Validator::make(
             $data,
             [
                 'name' => 'required|string|max:50|unique:"' . Permission::class . '",name,' . $request->id . '',
-                // 'slug' => 'required|regex:/(^([0-9A-Za-z\._\-]+)$)/|unique:"' . Permission::class . '",slug,' . $request->id . '|string|max:50|min:3',
+                'slug' => 'required|regex:/(^([0-9A-Za-z\._\-]+)$)/|unique:"' . Permission::class . '",slug,' . $request->id . '|string|max:50|min:3',
             ],
             [
-                // 'slug.regex' => __('admin.permission.slug_validate'),
+                'slug.regex' => __('admin.permission.slug_validate'),
             ]
         );
 
@@ -170,7 +166,7 @@ class PermissionController extends Controller
         //         ->withInput();
         // }
 
-        // $data['slug'] = Str::slug($data['name']);
+        $data['slug'] = Str::slug($data['name']);
         $data['http_uri'] = implode(',', ($data['http_uri'] ?? []));
 
         $permission = Permission::findorfail($request->id);
@@ -179,8 +175,9 @@ class PermissionController extends Controller
         $save = $request->submit ?? 'apply';
 
         if ($save == 'apply') {
-            // $msg = "Permission has been updated successfully";
-            return redirect(route('admin.permission.edit', array($request->id)));
+            $msg = "Permission has been updated successfully";
+            $url = route('admin.permission.edit', array($request->id));
+            Helpers::msg_move_page($msg, $url);
         } else {
             return redirect(route('admin.permission.index'));
         }

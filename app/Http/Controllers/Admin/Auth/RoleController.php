@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-
+use App\Libraries\Helpers;
 use App\Models\Backend\AdminUser, App\Models\Backend\Role, App\Models\Backend\Permission;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
@@ -67,11 +67,12 @@ class RoleController extends Controller
                 'name' => 'required|string|max:50|unique:"' . Role::class . '",name',
                 'slug' => 'required|regex:/(^([0-9A-Za-z\._\-]+)$)/|unique:"' . Role::class . '",slug|string|max:50|min:3',
             ],
-            [
-                'slug.regex' => sc_language_render('admin.role.slug_validate'),
-            ]
+            // [
+            //     'slug.regex' => sc_language_render('admin.role.slug_validate'),
+            // ]
         );
 
+        // dd(123);
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
@@ -186,8 +187,9 @@ class RoleController extends Controller
 
         $save = $data['submit'] ?? 'apply';
         if ($save == 'apply') {
-            // $msg = "Permission has been Updated";
-            return redirect(route('admin.role.edit', array($id)));
+            $msg = "Permission has been Updated";
+            $url = route('admin.role.edit', array($id));
+            Helpers::msg_move_page($msg, $url);
         } else {
             return redirect(route('admin.role.index'));
         }

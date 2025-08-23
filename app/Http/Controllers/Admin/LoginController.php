@@ -37,7 +37,6 @@ class LoginController extends Controller
 
     public function __construct()
     {
-        // F:\web\onehealth.foundation\app\Http\Middleware\RedirectIfAuthenticated.php
         $this->middleware('guest:admin')->except('logout');
     }
 
@@ -51,13 +50,10 @@ class LoginController extends Controller
         return view('backend.auth.login');
     }
 
-    // public function login()
-    // {
-    //     // dd(123);
-    // }
     public function logout()
     {
         Auth::guard('admin')->logout();
-        return redirect()->route('admin.login');
+        // return redirect()->route('admin.login');
+        return redirect()->route('index');
     }
 }
