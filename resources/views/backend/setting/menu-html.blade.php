@@ -116,8 +116,23 @@
                                                         </div>
                                                     </li>
 
-                                                    {{-- Category --}}
                                                     <li class="control-section accordion-section add-page" id="add-page">
+                                                        <h3 class="accordion-section-title hndle" tabindex="0"> Post <span class="screen-reader-text">Press return or enter to expand</span></h3>
+                                                        <div class="accordion-section-content ">
+                                                            <div class="inside">
+                                                                <div class="customlinkdiv" id="customlinkdiv">
+                                                                    @include('backend.setting.includes.post_items')
+                                                                </div>
+                                                                <p class="button-controls">
+                                                                    <a href="#" class="button-secondary submit-add-to-menu right add_menu_item">Add menu item</a>
+                                                                    <span class="spinner" id="spincustomu"></span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+                                                    {{-- Category --}}
+                                                    {{-- <li class="control-section accordion-section add-page" id="add-page">
                                                         <h3 class="accordion-section-title hndle" tabindex="0"> Category <span class="screen-reader-text">Press return or enter to expand</span></h3>
                                                         <div class="accordion-section-content ">
                                                             <div class="inside">
@@ -130,37 +145,8 @@
                                                                 </p>
                                                             </div>
                                                         </div>
-                                                    </li>
+                                                    </li> --}}
 
-                                                    <li class="control-section accordion-section add-page" id="add-page">
-                                                        <h3 class="accordion-section-title hndle" tabindex="0"> Campaign <span class="screen-reader-text">Press return or enter to expand</span></h3>
-                                                        <div class="accordion-section-content ">
-                                                            <div class="inside">
-                                                                <div class="customlinkdiv" id="customlinkdiv">
-                                                                    @include('backend.setting.includes.campaign_items')
-                                                                </div>
-                                                                <p class="button-controls">
-                                                                    <a href="#" class="button-secondary submit-add-to-menu right add_menu_item">Add menu item</a>
-                                                                    <span class="spinner" id="spincustomu"></span>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-
-                                                    <li class="control-section accordion-section add-page" id="add-page">
-                                                        <h3 class="accordion-section-title hndle" tabindex="0"> Landing <span class="screen-reader-text">Press return or enter to expand</span></h3>
-                                                        <div class="accordion-section-content ">
-                                                            <div class="inside">
-                                                                <div class="customlinkdiv" id="customlinkdiv">
-                                                                    @include('backend.setting.includes.landing_items')
-                                                                </div>
-                                                                <p class="button-controls">
-                                                                    <a href="#" class="button-secondary submit-add-to-menu right add_menu_item">Add menu item</a>
-                                                                    <span class="spinner" id="spincustomu"></span>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </li>
 
                                                     {{-- <li class="control-section accordion-section add-page" id="add-page">
                                                         <h3 class="accordion-section-title hndle" tabindex="0"> Video category <span class="screen-reader-text">Press return or enter to expand</span></h3>

@@ -18,10 +18,10 @@ class Page extends Model
     // protected $table = 'page';
     protected $guarded = [];
 
-    // public function admin(): BelongsTo
-    // {
-    //     return $this->belongsTo(Admin::class, 'admin_id');
-    // }
+    public static function newFactory()
+    {
+        return \Database\Factories\PageFactory::new();
+    }
 
     public function user(): BelongsTo
     {

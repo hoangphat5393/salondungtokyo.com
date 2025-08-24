@@ -19,6 +19,11 @@ class Post extends Model
     // protected $table = 'post';
     protected $guarded = [];
 
+    public static function newFactory()
+    {
+        return \Database\Factories\PostFactory::new();
+    }
+
     public function categories(): BelongsToMany
     {
         // return $this->belongsToMany(Category::class, 'post_category', 'post_id', 'category_id');
