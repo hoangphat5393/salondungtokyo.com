@@ -36,9 +36,9 @@
 
     @include('frontend.layouts.menu')
 
-    <main id="home">
+    <main>
 
-        <section class="banner-video block1">
+        <section class="banner-video block1" id="home">
 
             <div class="position-relative">
                 <figure class="mb-0">
@@ -56,9 +56,8 @@
             $album = \App\Models\Frontend\Album::where(['status' => 1, 'id' => 7])->first();
         @endphp
 
-        <section class="section-lg bg-light block2">
+        <section class="section-lg bg-light block2" id="service">
             <div class="container py-5">
-
                 <div class="row justify-content-center ">
                     <div class="col-md-8">
                         <h2 class="text-center h1 fw-700 sec_title">Dịch vụ làm tóc</h2>
@@ -138,7 +137,7 @@
             </div>
         </section>
 
-        <section class="section section-lg block4 bg-dark">
+        <section class="section section-lg block4 bg-dark" id="about">
 
             <div class="container py-5">
                 <div class="row justify-content-lg-between py-3">

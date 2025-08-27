@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Backend\Page;
 use App\Http\Requests\StorePageRequest;
 use App\Http\Requests\UpdatePageRequest;
-use App\Libraries\Helpers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -84,8 +83,11 @@ class PostController extends Controller
         $save = $request->submit ?? 'apply';
         if ($save == 'apply') {
             $msg = "Post has been created successfully";
-            $url = route('admin.post.edit', array($insert_id));
-            Helpers::msg_move_page($msg, $url);
+            // $url = route('admin.post.edit', array($insert_id));
+            // Helpers::msg_move_page($msg, $url);
+
+            // Redirect to detail
+            return redirect()->route('admin.post.edit', $insert_id)->with('success', $msg);
         } else {
             return redirect(route('admin.post.index'));
         }
@@ -141,8 +143,11 @@ class PostController extends Controller
         $save = $request->submit ?? 'apply';
         if ($save == 'apply') {
             $msg = "Post has been updated successfully";
-            $url = route('admin.post.edit', array($request->id));
-            Helpers::msg_move_page($msg, $url);
+            // $url = route('admin.post.edit', array($request->id));
+            // Helpers::msg_move_page($msg, $url);
+
+            // Redirect to detail
+            return redirect()->route('admin.post.edit', $request->id)->with('success', $msg);
         } else {
             return redirect(route('admin.post.index'));
         }

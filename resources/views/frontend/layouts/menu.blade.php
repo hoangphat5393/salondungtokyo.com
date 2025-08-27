@@ -6,7 +6,9 @@
     }
     $lc = app()->getLocale();
 
-    $headerMenu = \App\Models\Frontend\Menu::where('name', 'Menu-main-' . $lc)->first();
+    $headerMenu = \App\Models\Frontend\Menu::where('name', 'Menu-main')->first();
+
+    // dd($headerMenu);
 
 @endphp
 

@@ -177,7 +177,7 @@
 
                                                         <label class="menu-name-label howto open-label mb-0" for="menu-name">
                                                             <span>Name</span>
-                                                            <input name="menu-name" id="menu-name" type="text" class="menu-name regular-text menu-item-textbox" title="Enter menu name" value="@if ($indmenu) {{ $indmenu->name }} @endif">
+                                                            <input name="menu-name" id="menu-name" type="text" class="menu-name regular-text menu-item-textbox" title="Enter menu name" value="{{ $indmenu ? $indmenu->name : '' }}">
                                                             <input type="hidden" id="idmenu" value="{{ $indmenu->id ?? '' }}" />
                                                         </label>
 
