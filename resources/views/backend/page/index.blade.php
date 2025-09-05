@@ -96,7 +96,7 @@
                                             <th scope="col" class="text-center">@lang('admin.created date')</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="shift_chkbox">
                                         @if ($pages->count())
                                             @include('backend.page.page_item', ['level' => 0, 'pages' => $pages])
                                         @endif

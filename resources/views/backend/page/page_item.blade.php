@@ -3,9 +3,13 @@
         <tr class="align-middle tr-item item-level-{{ isset($level) ? $level : 0 }}">
             <td class="text-center">
                 <div class="icheck-info d-inline">
-                    <input type="checkbox" id="{{ $item->id }}" name="seq_list[]" value="{{ $item->id }}">
+                    <input type="checkbox" id="{{ $item->id }}" class="chk_list" name="chk_list[]" value="{{ $item->id }}">
                     <label for="{{ $item->id }}"></label>
                 </div>
+                {{-- <div class="d-inline">
+                    <input type="checkbox" id="{{ $item->id }}" class="chk_list" name="chk_list[]" value="{{ $item->id }}">
+                    <label for="{{ $item->id }}"></label>
+                </div> --}}
             </td>
 
             <td class="text-center">

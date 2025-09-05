@@ -28,7 +28,7 @@ $(function () {
         });
     }
 
-    //delete post
+    // delete post
     // $('.delete-post').on('click', function (event) {
     //     var url = $(this).data('url');
     //     $.confirm({
@@ -53,13 +53,40 @@ $(function () {
     $('.multi-select2').select2();
 });
 
+// Shift select multiple checkboxes
+// const checkboxes = document.querySelectorAll('.shift_chkbox input[type="checkbox"]');
+// const checkboxes = document.querySelectorAll('.shift_chkbox input[name="chk_list[]"]');
+// let lastChecked;
+
+// function handleCheck(e) {
+//     let inBetween = false;
+
+//     // console.log(lastChecked);
+
+//     if (e.shiftKey && this.checked) {
+//         checkboxes.forEach(checkbox => {
+//             if (checkbox === this || checkbox === lastChecked) {
+//                 inBetween = !inBetween;
+//             }
+
+//             // console.log(checkbox, this, lastChecked, inBetween);
+
+//             if (inBetween) {
+//                 checkbox.checked = true;
+//             }
+//         });
+//     }
+//     lastChecked = this;
+// };
+
+// checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck));
+
+
 function get_address_full() {
-    var address_full = $('.place_select')
-        .map(function () {
-            var val = $(this).find('option:selected').val();
-            if (val != '') return $(this).find('option:selected').text();
-        })
-        .get();
+    var address_full = $('.place_select').map(function () {
+        var val = $(this).find('option:selected').val();
+        if (val != '') return $(this).find('option:selected').text();
+    }).get();
     address_full = address_full.reverse();
 
     $('#address').val(address_full.join(', '));
@@ -70,117 +97,129 @@ function get_place(type, id, child) {
         method: 'post',
         url: admin_url + '/place-select',
         data: { type: type, id: id },
-    })
-        .then((res) => {
-            $('.' + child).html(res.data);
-        })
-        .catch((e) => console.log(e));
+    }).then((res) => {
+        $('.' + child).html(res.data);
+    }).catch((e) => console.log(e));
 }
 
 function select_all() {
     $(function () {
-        var checkboxes = $('#table_index')
-            .find(':checkbox')
-            .each(function () {
-                if ($(this).is(':checked')) {
-                    //checkboxes.attr('checked', 'checked');
-                    $(':checkbox').prop('checked', true);
-                } else {
-                    //checkboxes.removeAttr('checked');
-                    $(':checkbox').prop('checked', false);
-                }
-            });
+        var checkboxes = $('#table_index').find(':checkbox').each(function () {
+            if ($(this).is(':checked')) {
+                //checkboxes.attr('checked', 'checked');
+                $(':checkbox').prop('checked', true);
+            } else {
+                //checkboxes.removeAttr('checked');
+                $(':checkbox').prop('checked', false);
+            }
+        });
     });
 }
 
-function delete_post(url) {
-    arr = [];
-    var post_list = $('input[name="post_list[]"]:checked')
-        .map(function () {
-            arr.push($(this).val());
-        })
-        .get();
-    axios({
-        method: 'POST',
-        url: url,
-        data: { post_list: arr },
-    })
-        .then((res) => {
-            $('input[name="post_list[]"]:checked').each(function () {
-                $('.item-' + $(this).val()).remove();
-            }); //each
-            $.alert({
-                title: 'Delete done',
-                content: '',
-            });
-        })
-        .catch((e) => console.log(e));
-}
+// function delete_post(url) {
+//     arr = [];
+
+//     var post_list = $('input[name="post_list[]"]:checked').map(function () {
+//         arr.push($(this).val());
+//     }).get();
+
+//     axios({
+//         method: 'POST',
+//         url: url,
+//         data: { post_list: arr },
+//     }).then((res) => {
+//         $('input[name="post_list[]"]:checked').each(function () {
+//             $('.item-' + $(this).val()).remove();
+//         }); //each
+//         $.alert({
+//             title: 'Delete done',
+//             content: '',
+//         });
+//     }).catch((e) => console.log(e));
+// }
+
+
+// function delete_id(type) {
+//     arr = new Array();
+//     $('input[name="seq_list[]"]:checked').each(function () {
+//         arr = $('input:checkbox').serializeArray();
+//         arr.push({ name: '_token', value: getMetaContentByName('csrf-token') });
+//         arr.push({ name: 'type', value: type });
+//     }); //each
+
+//     console.log('1239191', arr.length);
+
+//     if (arr.length == 0) {
+//         alert('Vui lòng chọn mục cần xóa!');
+//         return false;
+//     }
+//     var info_user_admin = '';
+//     if (type == 'user_admin') {
+//         info_user_admin = 'Xóa tài khoản nhân viên sẽ xóa tất cả sản phẩm, đơn hàng thuộc tài khoản này! \n';
+//     }
+
+//     if (confirm(info_user_admin + 'Are you sure delete?')) {
+//         $(function () {
+//             $.ajax({
+//                 type: 'POST',
+//                 url: admin_url + '/delete-id',
+//                 data: arr, //pass the array to the ajax call
+//                 cache: false,
+//                 beforeSend: function () { },
+//                 success: function () {
+//                     location.reload();
+//                 },
+//             }); //ajax
+//         });
+//     } else {
+//         return false;
+//     }
+// }
 
 function delete_id(type) {
-    arr = new Array();
-    $('input[name="seq_list[]"]:checked').each(function () {
-        arr = $('input:checkbox').serializeArray();
-        arr.push({ name: '_token', value: getMetaContentByName('csrf-token') });
-        arr.push({ name: 'type', value: type });
-    }); //each
+    // axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+    // axios.defaults.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
 
-    console.log('1239191', arr.length);
+    const $checked = $('input[name="chk_list[]"]:checked');
+    const ids = $checked.map(function () { return this.value; }).get();
 
-    if (arr.length == 0) {
-        alert('Vui lòng chọn mục cần xóa!');
-        return false;
-    }
-    var info_user_admin = '';
-    if (type == 'user_admin') {
-        info_user_admin = 'Xóa tài khoản nhân viên sẽ xóa tất cả sản phẩm, đơn hàng thuộc tài khoản này! \n';
-    }
+    if (!confirm(`Bạn chắc chắn muốn xoá ${ids.length} dòng?`)) return;
 
-    if (confirm(info_user_admin + 'Are you sure delete?')) {
-        $(function () {
-            $.ajax({
-                type: 'POST',
-                url: admin_url + '/delete-id',
-                data: arr, //pass the array to the ajax call
-                cache: false,
-                beforeSend: function () { },
-                success: function () {
-                    location.reload();
-                },
-            }); //ajax
-        });
-    } else {
-        return false;
-    }
+    console.log($checked, ids);
+
+    axios({
+        method: 'POST',
+        url: admin_url + '/delete-id',
+        data: {
+            chk_list: ids,
+            type: type
+        },
+    }).then((res) => {
+        location.reload();
+    }).catch((e) => console.log(e));
 }
 
 function replicate_id(type) {
-    arr = new Array();
-    $('input[name="seq_list[]"]:checked').each(function () {
-        arr = $('input:checkbox').serializeArray();
-        arr.push({ name: '_token', value: getMetaContentByName('csrf-token') });
-        arr.push({ name: 'type', value: type });
-    }); //each
 
-    console.log(arr);
-    if (arr.length == 0) {
+    const $checked = $('input[name="chk_list[]"]:checked');
+    const ids = $checked.map(function () { return this.value; }).get();
+
+    if ($checked.length == 0) {
         alert('Chọn dữ liệu cần tạo!');
         return false;
     }
 
-    if (confirm('Are you sure replicate?')) {
-        $(function () {
-            $.ajax({
-                type: 'POST',
-                url: admin_url + '/replicate-id',
-                data: arr, //pass the array to the ajax call
-                cache: false,
-                beforeSend: function () { },
-                success: function () {
-                    location.reload();
-                },
-            }); //ajax
-        });
+    if (confirm(`Bạn chắc chắn muốn copy ${ids.length} dòng?`)) {
+        axios({
+            method: 'POST',
+            url: admin_url + '/replicate-id',
+            data: {
+                chk_list: ids,
+                type: type
+            },
+        }).then((res) => {
+            location.reload();
+        }).catch((e) => console.log(e));
     } else {
         return false;
     }
@@ -562,11 +601,9 @@ $(function () {
             method: 'post',
             url: admin_url + '/quick-change',
             data: arr,
-        })
-            .then((res) => {
-                if (reload) location.reload();
-            })
-            .catch((e) => console.log(e));
+        }).then((res) => {
+            if (reload) location.reload();
+        }).catch((e) => console.log(e));
 
         // // debugger;
         // if (timeoutID) {
@@ -589,8 +626,8 @@ $(function () {
 });
 
 $(function () {
-    $('.copyButton').on('click', function () {
-        event.stopPropagation();
+    $('.copyButton').on('click', function (e) {
+        e.stopPropagation();
         const text = $(this).text(); // Lấy nội dung của thẻ span
         navigator.clipboard.writeText(text).then(() => {
             alertJs('success', 'Copied to clipboard!');
@@ -636,7 +673,6 @@ function alertConfirm(type = 'warning', msg = '') {
         title: msg,
     });
 }
-
 
 const formEdit = document.getElementById('formEdit');
 if (formEdit) {

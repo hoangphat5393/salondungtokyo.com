@@ -48,10 +48,10 @@ class AjaxController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
-    public function ajax_delete(Request $rq)
+    public function ajax_delete(Request $request)
     {
-        $type = $rq->type;
-        $check_data = $rq->seq_list;
+        $type = $request->type;
+        $check_data = $request->chk_list;
         $arr = array();
         $values = "";
 
@@ -202,7 +202,7 @@ class AjaxController extends Controller
     public function ajax_replicate(Request $rq)
     {
         $type = $rq->type;
-        $check_data = $rq->seq_list;
+        $check_data = $rq->chk_list;
         $arr = array();
         $values = "";
 
