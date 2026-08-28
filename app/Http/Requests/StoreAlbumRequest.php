@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
 class StoreAlbumRequest extends FormRequest
 {
@@ -14,7 +13,7 @@ class StoreAlbumRequest extends FormRequest
     public function authorize(): bool
     {
         // return false;
-        return Auth::check();
+        return true;
     }
 
     /**

@@ -471,4 +471,54 @@ class SalonAdminAndFrontendTest extends TestCase
             'id' => $post->id,
         ]);
     }
+
+    /**
+     * 16. Kiểm tra danh sách, thêm, sửa, xóa Quản Trị Viên / Thành Viên (/admin/user)
+     */
+    public function test_admin_user_management(): void
+    {
+        $admin = User::first();
+
+        // 1. GET danh sách người dùng (không bị lỗi Undefined variable $users)
+        $indexResponse = $this->actingAs($admin, 'admin')->get('/admin/user');
+        $indexResponse->assertStatus(200);
+        $indexResponse->assertSee($admin->email);
+
+        // 2. GET trang thêm người dùng
+        $createPageResponse = $this->actingAs($admin, 'admin')->get('/admin/user/create');
+        $createPageResponse->assertStatus(200);
+
+        // 3. Tạo người dùng mới
+        $createResponse = $this->actingAs($admin, 'admin')->post('/admin/user', [
+            'name' => 'Nhân Viên Tokyo Test',
+            'username' => 'staff_test_2026',
+            'email' => 'staff_test_2026@salondungtokyo.test',
+            'password' => '123456',
+            'admin_level' => 2,
+            'status' => 1,
+        ]);
+        $createResponse->assertRedirect(route('admin.user.index'));
+
+        $newUser = User::where('username', 'staff_test_2026')->first();
+        $this->assertNotNull($newUser);
+
+        // 4. GET trang sửa người dùng
+        $editPageResponse = $this->actingAs($admin, 'admin')->get('/admin/user/'.$newUser->id.'/edit');
+        $editPageResponse->assertStatus(200);
+
+        // 5. Cập nhật người dùng
+        $updateResponse = $this->actingAs($admin, 'admin')->put('/admin/user/'.$newUser->id, [
+            'name' => 'Nhân Viên Tokyo Updated',
+            'status' => 1,
+        ]);
+        $updateResponse->assertRedirect(route('admin.user.index'));
+
+        // 6. Xóa người dùng
+        $deleteResponse = $this->actingAs($admin, 'admin')->delete('/admin/user/'.$newUser->id);
+        $deleteResponse->assertRedirect(route('admin.user.index'));
+
+        $this->assertDatabaseMissing('users', [
+            'id' => $newUser->id,
+        ]);
+    }
 }

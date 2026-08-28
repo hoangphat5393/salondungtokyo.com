@@ -7,7 +7,6 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\Backend\Admin;
 use App\Models\Backend\AdminRole;
 use App\Models\Frontend\User;
-use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Redirect;
@@ -57,13 +56,11 @@ class UserAdminController extends Controller
      */
     public function index(Request $request)
     {
-        if (Auth::guard('admin')->user()->admin_level == 99999) {
-            $users = Admin::filter($request)
-                ->orderBy('id')
-                ->paginate(20)
-                ->appends($request->all());
-            $total_item = $users->count();
-        }
+        $users = Admin::filter($request)
+            ->orderBy('id')
+            ->paginate(20)
+            ->appends($request->all());
+        $total_item = $users->total();
 
         return view('backend.user-admin.index', compact('users', 'total_item'));
     }

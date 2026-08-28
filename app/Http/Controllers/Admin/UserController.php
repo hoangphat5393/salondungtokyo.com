@@ -5,14 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Libraries\Helpers;
 use App\Models\Backend\Role;
 use App\Models\Backend\User;
-use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Redirect;
 
 class UserController extends Controller
 {
@@ -22,11 +20,10 @@ class UserController extends Controller
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
+        $routeAdmin = [];
         $routes = app()->routes->getRoutes();
         foreach ($routes as $route) {
             if (Str::startsWith($route->uri(), SC_ADMIN_PREFIX)) {
@@ -38,11 +35,11 @@ class UserController extends Controller
                 ];
                 foreach ($route->methods as $key => $method) {
                     if ($method != 'HEAD' && ! collect($this->without())->first(function ($exp) use ($route) {
-                        return Str::startsWith($route->uri, $exp);
+                        return Str::startsWith($route->uri(), $exp);
                     })) {
                         $routeAdmin[] = [
-                            'uri' => $method.'::'.$route->uri,
-                            'name' => $route->uri,
+                            'uri' => $method.'::'.$route->uri(),
+                            'name' => $route->uri(),
                             'method' => $method,
                         ];
                     }
@@ -59,14 +56,12 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        if (Auth::guard('admin')->user()->admin_level == 99999) {
-            $users = User::filter($request)
-                ->orderBy('id')
-                ->paginate(20)
-                ->appends($request->all());
+        $users = User::filter($request)
+            ->orderByDesc('id')
+            ->paginate(20)
+            ->appends($request->all());
 
-            $total_item = $users->count();
-        }
+        $total_item = $users->total();
 
         return view('backend.user.index', compact('users', 'total_item'));
     }
@@ -86,38 +81,32 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $data = request()->except(['roles', 'submit', 'check_pass', 'password_confirmation', 'created_at']);
+        $data = $request->except(['roles', 'submit', 'check_pass', 'password_confirmation', 'created_at', '_token']);
 
-        // dd($data);
-        $save = $data['submit'] ?? 'apply';
-
-        $data['password'] = Hash::make($request->password);
-
-        $respons = User::create($data);
-        $insert_id = $respons->id;
-
-        // SAVE ROLE
-        $role_id = $request->roles ?? '';
-
-        if ($role_id != '') {
-            $admin = User::find($insert_id);
-            $admin->roles()->sync($role_id);
+        if (! empty($request->password)) {
+            $data['password'] = Hash::make($request->password);
         }
 
+        $user = User::create($data);
+
+        if ($request->has('roles') && is_array($request->roles)) {
+            $user->roles()->sync($request->roles);
+        }
+
+        $save = $request->submit ?? 'save';
         if ($save == 'apply') {
-            // $msg = "User has been Updated";
-            return redirect(route('admin.user.edit', [$insert_id]));
-        } else {
-            return redirect(route('admin.user.index'));
+            return redirect()->route('admin.user.edit', $user->id)->with('success', __('Thêm thành viên thành công!'));
         }
+
+        return redirect()->route('admin.user.index')->with('success', __('Thêm thành viên thành công!'));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $user, int $id)
+    public function show(string $id)
     {
-        $user = $user::find($id);
+        $user = User::findOrFail($id);
 
         return view('backend.user.show', compact('user'));
     }
@@ -125,9 +114,9 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user, int $id)
+    public function edit(string $id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
 
         $this->data = [
             'user' => $user,
@@ -135,82 +124,51 @@ class UserController extends Controller
             'user_roles' => $user->roles->pluck('id')->toArray(),
         ];
 
-        if ($user) {
-            return view('backend.user.single', $this->data);
-        } else {
-            return view('404');
-        }
+        return view('backend.user.single', $this->data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, string $id)
     {
-        $data = request()->except(['roles', 'submit', 'check_pass', 'password', 'password_confirmation', 'created_at', 'submit']);
+        $user = User::findOrFail($id);
+        $data = $request->except(['roles', 'submit', 'check_pass', 'password', 'password_confirmation', 'created_at', '_token', '_method']);
 
-        $sid = $request->id ?? 0;
-
-        $post_id = $sid;
-
-        // NẾU CÓ THAY ĐỔI PASSWORD
-        if (isset($request->check_pass)) {
-            $data['password'] = bcrypt($request->password);
+        if ($request->filled('password') && $request->has('check_pass')) {
+            $data['password'] = Hash::make($request->password);
         }
 
-        $user = User::findOrFail($request->id);
         $user->update($data);
 
-        // SAVE ROLE
-        $role_id = $request->roles ?? '';
-
-        if ($role_id != '') {
-            $admin = User::find($post_id);
-            $admin->roles()->sync($role_id);
+        if ($request->has('roles')) {
+            $user->roles()->sync((array) $request->roles);
         }
 
-        $save = $request->submit ?? 'apply';
-
+        $save = $request->submit ?? 'save';
         if ($save == 'apply') {
-            // $msg = "User has been updated successfully";
-            // $url = route('admin.user.edit', array($request->id));
-            return redirect(route('admin.user.edit', [$request->id]));
-        } else {
-            return redirect(route('admin.user.index'));
+            return redirect()->route('admin.user.edit', $user->id)->with('success', __('Cập nhật thành viên thành công!'));
         }
+
+        return redirect()->route('admin.user.index')->with('success', __('Cập nhật thành viên thành công!'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user, int $id)
+    public function destroy(string $id)
     {
-        // $user->find($id)->destroy();
-        // return redirect()->route('admin.userAdmin.index')->with('success', 'User deleted successfully.');
+        $currentUser = Auth::guard('admin')->user();
+        if ($currentUser && (int) $currentUser->id !== (int) $id) {
+            $user = User::findOrFail($id);
+            $user->roles()->detach();
+            $user->delete();
 
-        $user_current = auth()->user();
-        if (auth()->check() && $user_current->id != $id) {
-            $loadDelete = User::find($id)->delete();
-            $msg = 'Admin account has been Delete';
-
-            // $url = route('admin.user.index');
-            // Helpers::msg_move_page($msg, $url);
-            return redirect(route('admin.user.index'));
+            return redirect()->route('admin.user.index')->with('success', __('Xóa tài khoản thành công!'));
         }
-        $msg = 'Không thực hiện được thao tác này';
-        $url = route('admin.user.index');
-        Helpers::msg_move_page($msg, $url);
-        // return redirect(route('admin.user.index'));
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    // public function destroy(Page $page, $id)
-    // {
-    //     $page->find($id)->delete();
-    //     return redirect()->route('admin.page.index')->with('success', 'Page deleted successfully.');
-    // }
+        return redirect()->route('admin.user.index')->with('error', __('Không thể xóa tài khoản đang đăng nhập!'));
+    }
 
     public function without()
     {
