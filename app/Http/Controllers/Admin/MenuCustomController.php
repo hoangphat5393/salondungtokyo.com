@@ -14,10 +14,16 @@ class MenuCustomController extends Controller
      */
     public function index(Request $request)
     {
-        $menu = Menu::find($request->menu);
         $menulist = Menu::select('id', 'name')->get();
-        $indmenu = Menu::find($request->menu);
-        $menus = (new MenuItems)->getall($request->menu);
+
+        if ($request->has('menu')) {
+            $menuId = (int) $request->query('menu');
+            $indmenu = $menuId > 0 ? Menu::find($menuId) : null;
+        } else {
+            $indmenu = $menulist->first();
+        }
+
+        $menus = $indmenu ? (new MenuItems)->getall($indmenu->id) : collect();
 
         return view('backend.setting.menu', compact('menus', 'indmenu', 'menulist'));
     }

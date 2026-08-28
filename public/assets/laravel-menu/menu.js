@@ -7,28 +7,31 @@ function getmenus() {
 
     $('#spinsavemenu').show();
 
-    $('#menu-to-edit li').each(function (index) {
+    var parentStack = [];
+
+    $('#menu-to-edit > li.menu-item').each(function () {
         let dept = 0;
 
-        for (var i = 0; i < $('#menu-to-edit li').length; i++) {
-            var n = $(this)
-                .attr('class')
-                .indexOf('menu-item-depth-' + i);
-            if (n != -1) dept = i;
+        for (var i = 0; i <= 11; i++) {
+            if ($(this).attr('class').indexOf('menu-item-depth-' + i) !== -1) {
+                dept = i;
+            }
         }
 
-        var textoiner = $(this).find('.item-edit').text();
         var id = this.id.split('-');
-        var textoexplotado = textoiner.split('|');
-        var padre = 0;
+        var itemId = id[2];
 
-        if (!!textoexplotado[textoexplotado.length - 2] && textoexplotado[textoexplotado.length - 2] != id[2]) {
-            padre = textoexplotado[textoexplotado.length - 2];
+        while (parentStack.length > dept) {
+            parentStack.pop();
         }
+
+        var padre = dept === 0 ? 0 : parentStack[dept - 1] || 0;
+
+        parentStack[dept] = itemId;
 
         arraydata.push({
             depth: dept,
-            id: id[2],
+            id: itemId,
             parent: padre,
             sort: cont,
         });
@@ -92,7 +95,7 @@ function delete_menu_id() {
     if (confirm(info_user_admin + 'Are you sure you want to delete this menu?')) {
         $(function () {
             axios
-                .post(admin_url + '/delete-id', arr)
+                .post(window.AdminRoutes?.bulkDelete || admin_url + '/bulk-delete', arr)
                 .then((response) => {
                     window.location = admin_url + '/menu';
                 })
@@ -127,7 +130,7 @@ function replicate_menu_id(type, id) {
     if (confirm('Are you sure replicate?')) {
         $(function () {
             axios
-                .post(admin_url + '/replicate-id', arr)
+                .post(window.AdminRoutes?.bulkReplicate || admin_url + '/bulk-replicate', arr)
                 .then((response) => {
                     location.reload();
                 })
@@ -364,7 +367,7 @@ function createnewmenu() {
         axios
             .post(`admin/menu`, data)
             .then((response) => {
-                window.location = menuwr + '?menu=' + response.resp;
+                window.location = menuwr + '?menu=' + response.data.resp;
             })
             .catch((e) => console.error(e));
     } else {

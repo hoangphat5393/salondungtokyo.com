@@ -18,7 +18,7 @@
 @endsection
 
 @push('style')
-    <link rel="stylesheet" href="{{ asset('assets/css/menu-builder.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/menu-builder.css') }}?ver={{ time() }}">
 @endpush
 
 @section('content')
