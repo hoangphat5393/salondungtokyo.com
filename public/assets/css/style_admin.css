@@ -1,0 +1,716 @@
+/**
+ * Backend — chỉ style riêng cho CMS (sau AdminLTE + Bootstrap 5).
+ * Không reset toàn cục; ưu tiên token: var(--bs-*).
+ */
+
+/* -------------------------------------------------------------------------- */
+/* Helpers (Bootstrap đã có float-start / float-end / clearfix — không duplicate) */
+/* -------------------------------------------------------------------------- */
+
+.w-fit-content,
+.fit-content {
+    width: fit-content;
+}
+
+.max-vh-50 {
+    max-height: 50vh;
+}
+
+.max-vh-75 {
+    max-height: 75vh;
+}
+
+.max-vh-100 {
+    max-height: 100vh;
+}
+
+.text-red,
+.text-error {
+    color: var(--bs-danger);
+}
+
+/* jQuery Validate mặc định errorClass: "error" — không đổi file thư viện AdminLTE */
+.error {
+    color: var(--bs-danger);
+    font-weight: 600;
+}
+
+.fw-bold,
+.fw-700 {
+    font-weight: 700;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Bảng danh sách admin */
+/* -------------------------------------------------------------------------- */
+
+#table_index th,
+#table_index td {
+    vertical-align: middle;
+    padding: 0.35rem 0.5rem;
+}
+
+#table_index th {
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--bs-primary);
+}
+
+#tbl-order-detail img {
+    height: 90px;
+}
+
+.table.list-data .icheck-info {
+    padding-left: 9px;
+}
+
+table.table_child_bt tr th {
+    background-color: var(--bs-secondary-bg) !important;
+    color: var(--bs-body-color);
+}
+
+table.table_child_bt tr th,
+table.table_child_bt tr td {
+    padding: 3px 10px;
+    text-align: center;
+}
+
+table.table_child_bt tr td a {
+    color: var(--bs-link-color);
+    font-weight: bold;
+}
+
+table.table_child_bt tr td.slug_varibles {
+    color: var(--bs-danger);
+}
+
+.alternate_check_hide.action {
+    display: table-row !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Spinner & overlay loading */
+/* -------------------------------------------------------------------------- */
+
+@keyframes half-circle-spinner-animation {
+    0% {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+.list-content-loading {
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 3px;
+    bottom: 0;
+    display: none;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 99;
+}
+
+.half-circle-spinner {
+    border-radius: 100%;
+    height: 60px;
+    margin: 20px auto;
+    position: relative;
+    width: 60px;
+}
+
+.half-circle-spinner,
+.half-circle-spinner * {
+    box-sizing: border-box;
+}
+
+.half-circle-spinner .circle {
+    border: 3px solid transparent;
+    border-radius: 100%;
+    content: "";
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+
+.half-circle-spinner .circle.circle-1 {
+    animation: half-circle-spinner-animation 1s infinite;
+    border-top-color: var(--bs-primary);
+}
+
+.half-circle-spinner .circle.circle-2 {
+    animation: half-circle-spinner-animation 1s infinite alternate;
+    border-bottom-color: var(--bs-primary);
+}
+
+.list-content-loading .half-circle-spinner {
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.list-content-loading .half-circle-spinner .circle {
+    border-width: 5px;
+}
+
+.list-content-loading .half-circle-spinner .circle.circle-1 {
+    border-top-color: #fff;
+}
+
+.list-content-loading .half-circle-spinner .circle.circle-2 {
+    border-bottom-color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+    .list-content-loading {
+        top: 15px;
+    }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Form, upload, gallery, biến thể sản phẩm */
+/* -------------------------------------------------------------------------- */
+
+.container_group_setting input {
+    padding: 8px 12px;
+    line-height: 1.5;
+}
+
+.custom-file-link {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 35px;
+    margin: 0;
+    opacity: 1;
+}
+
+.custom-file-label-thumb {
+    width: 100px;
+    z-index: 9;
+    right: 0;
+    left: inherit;
+    position: relative;
+}
+
+.icon_change_postion {
+    width: 4%;
+    float: left;
+    display: block;
+}
+
+.icon_change_postion.image_view.image_show_demo {
+    width: 10%;
+}
+
+.icon_change_postion .ui-icon-arrowthick-2-n-s {
+    line-height: 30px;
+    display: block;
+    margin-top: 5px;
+}
+
+.group-action a {
+    font-size: 14px;
+}
+
+.group_item_images .inside {
+    margin-bottom: 5px;
+}
+
+.mybutton_upload_img {
+    background: linear-gradient(135deg, rgba(30, 87, 153, 1) 0%, rgba(124, 184, 231, 1) 99%, rgba(125, 185, 232, 0) 100%);
+    border: 0;
+    color: #fff;
+    display: block;
+    float: right;
+    font-weight: bold;
+    height: 32px;
+    line-height: 32px;
+    margin-top: 2px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    width: 14%;
+    z-index: 1999;
+    border-radius: 5px;
+}
+
+input.upload_gallery_file,
+input.upload_gallery_variable,
+input.upload_icon_variable,
+input.upload_gallery_variable_select {
+    cursor: pointer;
+    font-size: 100px;
+    height: 26px;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+}
+
+.add_link .add {
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    display: block;
+    overflow: hidden;
+    position: relative;
+    padding: 0 10px;
+    line-height: 26px;
+    border: 1px solid var(--bs-border-color);
+    text-align: center;
+    color: #fff;
+    z-index: 1999;
+    background: linear-gradient(135deg, rgba(30, 87, 153, 1) 0%, rgba(124, 184, 231, 1) 99%, rgba(125, 185, 232, 0) 100%);
+    margin-top: 9px;
+}
+
+#tabLang {
+    margin-bottom: 15px;
+}
+
+.action_group_box_touth {
+    margin-bottom: 5px;
+}
+
+.action_group_box_touth label {
+    display: block;
+}
+
+.list_cat_post_content_link a.tag {
+    border: 1px solid var(--bs-border-color);
+    padding: 2px 5px;
+    margin-right: 5px;
+    display: flex;
+    align-content: center;
+    margin-bottom: 5px;
+    color: var(--bs-body-color);
+    background: var(--bs-tertiary-bg);
+    border-radius: 5px;
+}
+
+.text_input_file_image_variable {
+    float: left;
+    width: 80%;
+    display: block;
+    margin: 5px;
+}
+
+.wrap-pass {
+    display: none;
+}
+
+.avtive-wpap-pass {
+    display: block;
+}
+
+.space_input_demo .myfile_gallery_store {
+    margin-top: 15px;
+}
+
+ul#muti_menu_post {
+    padding-left: 5px;
+    display: block;
+    list-style: none;
+    font-size: 15px;
+}
+
+ul#muti_menu_post>li {
+    display: block;
+}
+
+ul#muti_menu_post>li label {
+    word-wrap: break-word;
+    margin-bottom: 5px;
+}
+
+ul#muti_menu_post>li input[type="checkbox"],
+ul#muti_menu_post>li input[type="radio"] {
+    margin-right: 5px;
+}
+
+ul#muti_menu_post>li>ul {
+    padding-left: 15px;
+    display: block;
+    list-style: none;
+}
+
+ul#muti_menu_post>li>ul>li {
+    display: block;
+    word-wrap: break-word;
+}
+
+ul#muti_menu_post>li>ul>li>ul {
+    padding-left: 25px;
+    display: block;
+    list-style: none;
+}
+
+ul#muti_menu_post>li>ul>li>ul>li {
+    display: block;
+    word-wrap: break-word;
+}
+
+.user-owner-product {
+    padding-bottom: 15px;
+}
+
+.text_input_file_image {
+    float: left;
+    width: 75%;
+    display: block;
+}
+
+div#csv_upload_mobile,
+div#csv_upload_pc {
+    display: block;
+    overflow: hidden;
+    position: relative;
+    width: 14%;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    z-index: 1999;
+    background: linear-gradient(135deg, rgba(30, 87, 153, 1) 0%, rgba(124, 184, 231, 1) 99%, rgba(125, 185, 232, 0) 100%);
+    float: right;
+}
+
+input#csv_slishow,
+input#csv_slishow_mobile {
+    cursor: pointer;
+    font-size: 100px;
+    height: 26px;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+}
+
+#variable_add_append {
+    display: block;
+    padding: 10px;
+    background: var(--bs-body-bg);
+    border-radius: 5px;
+}
+
+#variable_add_append .item_variable_gennerate {
+    position: relative;
+    margin-bottom: 10px;
+    display: block;
+    padding: 10px;
+    border: 1px dashed var(--bs-danger);
+    border-radius: 5px;
+}
+
+.content_variable_images .title_txt {
+    font-weight: bold;
+    padding-top: 8px;
+    margin-bottom: 5px;
+}
+
+.content_variable_images .img_demo img {
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+.demo-img {
+    background: var(--bs-secondary-bg);
+    text-align: center;
+}
+
+.package_status {
+    font-size: 13px;
+    color: var(--bs-body-color);
+    line-height: 1.4;
+}
+
+.package_status p {
+    margin-bottom: 5px;
+}
+
+.package_status .status-ok,
+.package_status .status-wait,
+.package_status .status-payment-wait {
+    font-size: 12px;
+    color: #f5222d;
+    background: #fff1f0;
+    border: 1px solid #ffa39e;
+    border-radius: 2px;
+    line-height: 20px;
+    padding: 0 7px;
+    margin-left: 10px;
+}
+
+.package_status .status-ok {
+    border-color: #3ab51b;
+    color: #3ab51b;
+    background: rgba(58, 181, 27, 0.09);
+}
+
+.package_status .status-wait {
+    border-color: #fe7d09;
+    color: #fe7d09;
+    background: #fff6ed;
+}
+
+/* Tags input plugin */
+.bootstrap-tagsinput {
+    background-color: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06);
+    display: inline-block;
+    padding: 4px 6px;
+    color: var(--bs-body-color);
+    vertical-align: middle;
+    border-radius: var(--bs-border-radius);
+    width: 100%;
+    line-height: 22px;
+    cursor: text;
+}
+
+.bootstrap-tagsinput input {
+    border: none;
+    box-shadow: none;
+    outline: none;
+    background-color: transparent;
+    padding: 0 6px;
+    margin: 0;
+    width: auto;
+    max-width: inherit;
+}
+
+.bootstrap-tagsinput.form-control input::-moz-placeholder {
+    color: var(--bs-secondary-color);
+    opacity: 1;
+}
+
+.bootstrap-tagsinput.form-control input:-ms-input-placeholder {
+    color: var(--bs-secondary-color);
+}
+
+.bootstrap-tagsinput.form-control input::-webkit-input-placeholder {
+    color: var(--bs-secondary-color);
+}
+
+.bootstrap-tagsinput input:focus {
+    border: none;
+    box-shadow: none;
+}
+
+.bootstrap-tagsinput .tag {
+    margin-right: 2px;
+    color: #fff;
+    background: var(--bs-secondary);
+    border-radius: 3px;
+    padding: 3px;
+    margin: 3px 0;
+    display: inline-block;
+}
+
+.bootstrap-tagsinput .tag [data-role="remove"] {
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+.bootstrap-tagsinput .tag [data-role="remove"]::after {
+    content: "x";
+    padding: 0 2px;
+}
+
+.bootstrap-tagsinput .tag [data-role="remove"]:hover {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.bootstrap-tagsinput .tag [data-role="remove"]:hover:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+/* Checkbox / toggle chỉnh nhẹ (icheck + bootstrap5-toggle) */
+.form-check {
+    min-height: 1.5rem;
+}
+
+.form-check-input {
+    top: 0.3rem;
+}
+
+.form-check .form-check-input {
+    margin-top: 0.25em;
+}
+
+.checkbox-lg .form-check-input {
+    top: 0.8rem;
+    scale: 1.4;
+    margin-right: 0.7rem;
+}
+
+.checkbox-lg .form-check-label {
+    padding-top: 9px;
+}
+
+.checkbox-xl .form-check-input {
+    top: 1.2rem;
+    scale: 1.7;
+    margin-right: 0.8rem;
+}
+
+.checkbox-xl .form-check-label {
+    padding-top: 15px;
+}
+
+.toggle-off.btn {
+    padding-left: 21px;
+}
+
+.link {
+    color: #c76805;
+    word-break: break-all;
+    font-weight: 700;
+}
+
+.link span {
+    font-weight: 700;
+    color: var(--bs-secondary-color);
+}
+
+/* Select2 — chỉnh màu chip theo primary theme */
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: #fff;
+    padding: 0 10px;
+    margin-top: 0.31rem;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #fff;
+}
+
+.widget-category .card-body {
+    overflow: auto;
+}
+
+/* Gallery reorder */
+.gallery_box {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: var(--bs-body-bg);
+}
+
+.gallery_box .gallery_item {
+    display: inline-block;
+    padding: 5px;
+    width: 33%;
+    min-height: 110px;
+}
+
+.gallery_box .gallery_content {
+    border: 1px solid var(--bs-border-color);
+    box-shadow: 0 0 9px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    height: 100%;
+}
+
+.gallery_box .gallery_item img {
+    object-fit: cover;
+    max-width: 100%;
+    height: 100%;
+}
+
+.gallery_box .gallery_item.blue-background-class .gallery_content {
+    background: #a3a3a3;
+}
+
+.gallery_box .gallery_item.blue-background-class img {
+    opacity: 0.2;
+}
+
+.gallery_box .gallery_item .remove {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #fff;
+    font-size: 14px;
+    color: var(--bs-danger);
+    cursor: pointer;
+}
+
+.form-group-image-box {
+    display: flex;
+}
+
+.image-box-container {
+    position: relative;
+    font-size: 0;
+    background: var(--bs-secondary-bg);
+    width: 100px;
+}
+
+.image-box-container img {
+    border: 1px solid var(--bs-border-color);
+    width: 100%;
+}
+
+.custom-image-box {
+    height: 0;
+    padding-bottom: 100%;
+    position: relative;
+    z-index: 400;
+}
+
+.custom-image-box img {
+    height: 100%;
+    left: 50%;
+    max-height: 100%;
+    max-width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    z-index: 1;
+}
+
+.custom-image-box .image-box-actions {
+    text-indent: -9999999px;
+}
+
+.custom-image-box .ckfinder-popup,
+.custom-image-box .btn-images {
+    display: block;
+    font-size: 0;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 310;
+}
+
+.customlinkdiv .form-group {
+    margin-bottom: 0.75rem;
+}
+
+i.handle {
+    cursor: grab;
+}
+
+#showBtn {
+    margin-right: 8px;
+}
