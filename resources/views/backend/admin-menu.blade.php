@@ -314,22 +314,21 @@
             var id = $(this).data('id');
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
+                    confirmButton: 'btn btn-danger mx-1',
+                    cancelButton: 'btn btn-secondary mx-1'
                 },
-                buttonsStyling: true,
-            })
+                buttonsStyling: false,
+            });
 
             swalWithBootstrapButtons.fire({
                 title: '{{ __('action.delete_confirm') }}',
                 text: "",
-                type: 'warning',
+                icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: '{{ __('action.confirm_yes') }}',
-                confirmButtonColor: "#DD6B55",
                 cancelButtonText: '{{ __('action.confirm_no') }}',
                 reverseButtons: true,
-
+                showLoaderOnConfirm: true,
                 preConfirm: function() {
                     return axios.post('{{ $urlDeleteItem ?? '' }}', {
                             id: id,
@@ -338,33 +337,34 @@
                         .then(function(response) {
                             const data = response.data;
                             if (data.error == 1) {
-                                alertMsg('error', 'Cancelled', data.msg);
-                                return;
-                            } else {
-                                alertMsg('success', 'Success');
-                                window.location.replace('{{ route('admin.admin-menu.index') }}');
+                                Swal.showValidationMessage(data.msg || 'Không thể xóa mục này!');
+                                return false;
                             }
+                            return data;
                         })
                         .catch(function(e) {
-                            console.error(e);
+                            Swal.showValidationMessage('Lỗi kết nối máy chủ!');
                         });
-                }
-
+                },
+                allowOutsideClick: () => !Swal.isLoading()
             }).then((result) => {
-                if (result.value) {
-                    alertMsg('success', '{{ __('action.delete_confirm_deleted_msg') }}', '{{ __('action.delete_confirm_deleted') }}');
-                } else if (
-                    // Read more about handling dismissals
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    // swalWithBootstrapButtons.fire(
-                    //   'Cancelled',
-                    //   'Your imaginary file is safe :)',
-                    //   'error'
-                    // )
+                if (result.isConfirmed) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true
+                    });
+                    Toast.fire({
+                        icon: 'success',
+                        title: '{{ __('action.delete_confirm_deleted_msg') }}'
+                    });
+                    setTimeout(function() {
+                        window.location.replace('{{ route('admin.admin-menu.index') }}');
+                    }, 800);
                 }
-            })
-
+            });
         });
 
         $('#menu-sort').nestable();
