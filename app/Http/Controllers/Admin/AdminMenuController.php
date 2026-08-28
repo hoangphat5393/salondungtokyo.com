@@ -112,7 +112,7 @@ class AdminMenuController extends Controller
 
         AdminMenu::updateInfo($dataUpdate, $id);
 
-        return redirect()->back()->with('success', __('admin.menu.edit_success'));
+        return redirect()->back()->with('success', 'Cập nhật Menu Admin thành công!');
     }
 
     /*
@@ -132,7 +132,7 @@ class AdminMenuController extends Controller
                 AdminMenu::destroy($id);
             }
 
-            return response()->json(['error' => 0, 'msg' => '']);
+            return response()->json(['error' => 0, 'msg' => 'Xóa Menu Admin thành công!']);
         }
     }
 
@@ -169,7 +169,10 @@ class AdminMenuController extends Controller
             }
         }
         $response = (new AdminMenu)->reSort($newTree);
+        if (($response['error'] ?? 0) === 0) {
+            $response['msg'] = 'Thứ tự Menu Admin đã được lưu thành công!';
+        }
 
-        return $response;
+        return response()->json($response);
     }
 }

@@ -369,7 +369,10 @@
 
         $('#menu-sort').nestable();
         $('.menu-sort-save').click(function() {
-            $('#loading').show();
+            var $btn = $(this);
+            var originalHtml = $btn.html();
+            $btn.prop('disabled', true).addClass('disabled').html('<i class="fa fa-spinner fa-spin"></i> Đang lưu...');
+
             var serialize = $('#menu-sort').nestable('serialize');
             var menu = JSON.stringify(serialize);
             axios.post('{{ route('admin.admin-menu.update_sort') }}', {
@@ -377,17 +380,64 @@
                     menu: menu
                 })
                 .then(function(response) {
-                    $('#loading').hide();
+                    $btn.prop('disabled', false).removeClass('disabled').html(originalHtml);
                     const data = response.data;
                     if (data.error == 0) {
-                        location.reload();
+                        if (typeof Swal !== 'undefined') {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                }
+                            });
+                            Toast.fire({
+                                icon: 'success',
+                                title: data.msg || 'Thứ tự Menu Admin đã được lưu thành công!'
+                            });
+                        } else {
+                            alert('Thứ tự Menu Admin đã được lưu thành công!');
+                        }
                     } else {
-                        alertMsg('error', data.msg, 'Cancelled');
+                        if (typeof Swal !== 'undefined') {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3500,
+                                timerProgressBar: true
+                            });
+                            Toast.fire({
+                                icon: 'error',
+                                title: data.msg || 'Có lỗi xảy ra khi lưu menu!'
+                            });
+                        } else {
+                            alert(data.msg || 'Có lỗi xảy ra khi lưu menu!');
+                        }
                     }
                 })
                 .catch(function(e) {
-                    $('#loading').hide();
+                    $btn.prop('disabled', false).removeClass('disabled').html(originalHtml);
                     console.error(e);
+                    if (typeof Swal !== 'undefined') {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3500,
+                            timerProgressBar: true
+                        });
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Lỗi kết nối máy chủ khi lưu menu!'
+                        });
+                    } else {
+                        alert('Lỗi kết nối máy chủ!');
+                    }
                 });
         });
 
