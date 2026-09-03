@@ -67,14 +67,21 @@ class ContactController extends Controller
         // Loại liên hệ
         $contactType = ! empty($detail['type']) ? $detail['type'] : 'booking';
 
-        // ReCaptcha (nếu có cấu hình)
+        // ReCaptcha (chỉ kích hoạt trên production khi có secret)
         $score = 1.0;
-        $recaptchaToken = $request->get('g-recaptcha-response');
-        if (! empty($recaptchaToken) && class_exists('Lunaweb\RecaptchaV3\Facades\RecaptchaV3')) {
-            try {
-                $score = RecaptchaV3::verify($recaptchaToken, 'contact');
-            } catch (\Throwable $e) {
-                $score = 1.0;
+        $recaptchaSecret = config('recaptchav3.secret');
+        if (! empty($recaptchaSecret) && app()->environment('production')) {
+            $recaptchaToken = $request->get('g-recaptcha-response');
+            if (! empty($recaptchaToken) && class_exists('Lunaweb\RecaptchaV3\Facades\RecaptchaV3')) {
+                try {
+                    $verified = RecaptchaV3::verify($recaptchaToken, 'contact');
+                    $score = is_numeric($verified) ? (float) $verified : 0.0;
+                } catch (\Throwable $e) {
+                    report($e);
+                    $score = 1.0;
+                }
+            } else {
+                $score = 0.0;
             }
         }
 

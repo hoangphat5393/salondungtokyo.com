@@ -133,18 +133,31 @@ class RegisterController extends Controller
     {
         $data = $request->input();
 
-        $score = RecaptchaV3::verify($request->get('g-recaptcha-response'), 'contact');
+        $score = 1.0;
+        $recaptchaSecret = config('recaptchav3.secret');
+        if (! empty($recaptchaSecret) && app()->environment('production')) {
+            $recaptchaToken = $request->get('g-recaptcha-response');
+            if (! empty($recaptchaToken) && class_exists('Lunaweb\RecaptchaV3\Facades\RecaptchaV3')) {
+                try {
+                    $verified = RecaptchaV3::verify($recaptchaToken, 'register');
+                    $score = is_numeric($verified) ? (float) $verified : 0.0;
+                } catch (\Throwable $e) {
+                    report($e);
+                    $score = 1.0;
+                }
+            } else {
+                $score = 0.0;
+            }
+        }
 
         // Xét lỗi Recaptcha
-        if ($score > 0.7 && $data) {
-
-            $validator = $this->validator($data); // ->validate();
+        if ($score >= 0.5 && $data) {
+            $validator = $this->validator($data);
             if ($validator->fails()) {
                 $error = $validator->errors()->first();
                 $this->data['status'] = 'error';
                 $this->data['message'] = $error;
             } else {
-                // $user = $this->create($request->all());
                 $this->create($request->all());
                 $this->data['status'] = 'success';
                 $this->data['message'] = 'Register Successfully';
