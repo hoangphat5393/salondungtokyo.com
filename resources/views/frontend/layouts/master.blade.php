@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
@@ -260,6 +260,7 @@
     </style>
 
     @stack('styles')
+    @stack('head-script')
 </head>
 <body>
 
@@ -551,3 +552,4 @@
     @stack('scripts')
 </body>
 </html>
+

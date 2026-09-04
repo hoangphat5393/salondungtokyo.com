@@ -38,8 +38,11 @@ Route::get('news/{slug}.html', 'NewsController@index')
 
 // Đặt lịch & Liên hệ
 Route::get('contact.html', 'ContactController@index')->name('contact.index');
+Route::get('contact', 'ContactController@index')->name('contact');
 Route::post('contact-submit', 'ContactController@submit')->name('contact.submit');
+Route::post('contact', 'ContactController@submit');
 Route::get('contact-completed', 'ContactController@completed')->name('contact.completed');
+Route::get('contact-completed.html', 'ContactController@completed')->name('contact_completed');
 
 // Tìm kiếm
 Route::get('search', 'SearchController@index')->name('search');

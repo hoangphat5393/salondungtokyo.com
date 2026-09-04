@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\News;
-use App\NewsCategory;
+use App\Models\Frontend\Page;
 use App\Traits\LocalizeController;
+use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
@@ -13,115 +12,59 @@ class NewsController extends Controller
 
     public $data = [];
 
-    // All categories
+    // All news / posts
     public function index($slug = '')
     {
-        // All category
-        $categories = Category::where(['status' => 1, 'type' => 'post', 'parent' => 0])->get();
+        $this->data['news'] = Page::where('type', 'post')
+            ->where('status', 1)
+            ->orderBy('sort', 'asc')
+            ->orderByDesc('created_at')
+            ->paginate(9);
 
-        // All news
-        $news = News::where('status', 1)
-            ->orderbyDesc('sort')
-            ->paginate(10);
+        $this->data['seo'] = [
+            'seo_title' => 'Xu Hướng Tóc & Tin Tức | Salon Dũng Tokyo',
+            'seo_image' => setting_option('logo'),
+            'seo_description' => 'Cập nhật tin tức, xu hướng tạo mẫu tóc và bí quyết chăm sóc tóc đẹp từ Salon Dũng Tokyo.',
+            'seo_keyword' => 'tin tuc toc, xu huong mau toc, cham soc toc',
+        ];
 
-        // Lastest news
-        $feature_news = News::where('status', 1)
-            ->orderbyDesc('id')
-            ->limit(1)
-            ->get();
-
-        // default data
-        $this->data['categories'] = $categories;
-        $this->data['news'] = $news;
-
-        // extra data
-        $this->data['feature_news'] = $feature_news;
-
-        // dd($slug);
-        // if has slug then get single category data
-        if ($slug) {
-            return $this->categoryDetail($slug);
-        }
-
-        return view('theme.news.index', $this->data)->compileShortcodes();
-    }
-
-    // Single category
-    public function categoryDetail($slug)
-    {
-        $category = NewsCategory::where('slug', $slug)->first();
-
-        if ($category) {
-            $this->data['category'] = $category;
-            $this->data['category_child'] = $category->children();
-
-            $this->data['news'] = $news = $category->posts()
-                ->where('status', 1)
-                ->orderbyDesc('created_at')
-                ->orderbyDesc('id')
-                ->paginate(6);
-
-            $this->data['seo'] = [
-                'seo_title' => $category->seo_title != '' ? $category->seo_title : $category->name,
-                'seo_image' => $category->image,
-                'seo_description' => $category->seo_description ?? '',
-                'seo_keyword' => $category->seo_keyword ?? '',
-            ];
-            // return view($this->templatePath . '.news.index', $this->data);
-
-            // Nếu chỉ có 1 bài viết thì điều hướng tới bài vô bài viết đó luôn
-            // if ($news->count() == 1) {
-            //     return $this->newsDetail($news->first()->slug);
-            // }
-            return view('theme.news.category', $this->data)->compileShortcodes();
-        } else {
-            return view('errors.404');
-        }
-        // return $this->newsDetail($slug);
+        return view('frontend.news.index', $this->data);
     }
 
     // News detail
-    public function show($slug)
+    public function newsDetail($slug, $id = null)
     {
-        $news = News::where('slug', $slug)->first();
+        $post = Page::where('type', 'post')
+            ->where('status', 1)
+            ->where(function ($query) use ($slug, $id) {
+                if ($id) {
+                    $query->where('id', $id);
+                } else {
+                    $query->where('slug', $slug);
+                }
+            })
+            ->firstOrFail();
 
-        // All category
-        $categories = Category::where(['status' => 1, 'type' => 'post', 'parent' => 0])->get();
-
-        // default data
-        $this->data['categories'] = $categories;
-        $this->data['news'] = $news;
-
-        // Recently news
-        // $this->data['recently_news'] = $tintuc->news()
-        //     ->where('status', 1)
-        //     ->where('id', '<>', $news->id)
-        //     ->limit(4)
-        //     ->orderby('created_at', 'desc')
-        //     ->get();
-
-        // Latest news
-        // $this->data['latest_news'] = $tintuc->news()
-        //     ->where('status', 1)
-        //     ->where('id', '<>', $news->id)
-        //     ->limit(4)
-        //     ->orderby('id', 'desc')
-        //     ->get();
-
-        // Related News
-        // $this->data['related_news'] = $tintuc->news()
-        //     ->where('status', 1)
-        //     ->where('id', '<>', $news->id)
-        //     ->limit(4)
-        //     ->get();
+        $this->data['post'] = $post;
+        $this->data['related_posts'] = Page::where('type', 'post')
+            ->where('status', 1)
+            ->where('id', '<>', $post->id)
+            ->latest()
+            ->take(3)
+            ->get();
 
         $this->data['seo'] = [
-            'seo_title' => $news->seo_title != '' ? $news->seo_title : $news->name,
-            'seo_image' => $news->image,
-            'seo_description' => $news->seo_description ?? '',
-            'seo_keyword' => $news->seo_keyword ?? '',
+            'seo_title' => $post->seo_title ?: $post->name,
+            'seo_image' => $post->image ?: setting_option('logo'),
+            'seo_description' => $post->seo_description ?: Str::limit(strip_tags($post->description ?: $post->content), 150),
+            'seo_keyword' => $post->seo_keyword ?? '',
         ];
 
-        return view('theme.news.single', $this->data)->compileShortcodes();
+        return view('frontend.news.detail', $this->data);
+    }
+
+    public function show($slug)
+    {
+        return $this->newsDetail($slug);
     }
 }

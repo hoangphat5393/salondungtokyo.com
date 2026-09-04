@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Post;
-use App\NewsCategory;
-use App\Service;
+use App\Models\Frontend\Page;
 use App\Traits\LocalizeController;
+use Illuminate\Support\Str;
 
 class ServiceController extends Controller
 {
@@ -14,117 +12,51 @@ class ServiceController extends Controller
 
     public $data = [];
 
-    // All categories
+    // All services
     public function index($slug = '')
     {
-        // All category
-        // $categories = Category::where(['status' => 1, 'type' => 'post', 'parent' => 0])->get();
+        $this->data['services'] = Page::where('type', 'service')
+            ->where('status', 1)
+            ->orderBy('sort', 'asc')
+            ->orderByDesc('id')
+            ->paginate(12);
 
-        // All news
-        $services = Service::where('status', 1)
-            ->orderbyDesc('sort')
-            ->paginate(10);
+        $this->data['seo'] = [
+            'seo_title' => 'Dịch Vụ & Bảng Giá | Salon Dũng Tokyo',
+            'seo_image' => setting_option('logo'),
+            'seo_description' => 'Bảng giá dịch vụ làm tóc, uốn, duỗi, nhuộm, phục hồi tóc chuyên nghiệp tại Salon Dũng Tokyo.',
+            'seo_keyword' => 'bang gia salon dung tokyo, dich vu lam toc, uon toc, nhuom toc',
+        ];
 
-        // Lastest news
-        // $feature_news = Service::where('status', 1)
-        //     ->orderbyDesc('id')
-        //     ->limit(1)
-        //     ->get();
-
-        // default data
-        // $this->data['categories'] = $categories;
-        $this->data['services'] = $services;
-
-        // extra data
-        // $this->data['feature_news'] = $feature_news;
-
-        // dd($slug);
-        // if has slug then get single category data
-        if ($slug) {
-            return $this->categoryDetail($slug);
-        }
-
-        return view('theme.service.index', $this->data)->compileShortcodes();
-    }
-
-    // Single category
-    public function categoryDetail($slug)
-    {
-        $category = NewsCategory::where('slug', $slug)->first();
-
-        if ($category) {
-            $this->data['category'] = $category;
-            $this->data['category_child'] = $category->children();
-
-            $this->data['news'] = $news = $category->posts()
-                ->where('status', 1)
-                ->orderbyDesc('created_at')
-                ->orderbyDesc('id')
-                ->paginate(6);
-
-            $this->data['seo'] = [
-                'seo_title' => $category->seo_title != '' ? $category->seo_title : $category->name,
-                'seo_image' => $category->image,
-                'seo_description' => $category->seo_description ?? '',
-                'seo_keyword' => $category->seo_keyword ?? '',
-            ];
-            // return view($this->templatePath . '.news.index', $this->data);
-
-            // Nếu chỉ có 1 bài viết thì điều hướng tới bài vô bài viết đó luôn
-            // if ($news->count() == 1) {
-            //     return $this->newsDetail($news->first()->slug);
-            // }
-            return view('theme.news.category', $this->data)->compileShortcodes();
-        } else {
-            return view('errors.404');
-        }
-        // return $this->newsDetail($slug);
+        return view('frontend.service.index', $this->data);
     }
 
     // Service detail
-    public function show($slug)
+    public function show($slug, $id = null)
     {
-        $service = Service::where('slug', $slug)->first();
+        $service = Page::where('type', 'service')
+            ->where('status', 1)
+            ->where(function ($query) use ($slug, $id) {
+                if ($id) {
+                    $query->where('id', $id);
+                } else {
+                    $query->where('slug', $slug);
+                }
+            })
+            ->first();
 
-        // dd($service);
+        if (! $service) {
+            return redirect()->route('service');
+        }
 
-        // All category
-        // $categories = Category::where(['status' => 1, 'type' => 'service', 'parent' => 0])->get();
-
-        // default data
-        // $this->data['categories'] = $categories;
         $this->data['service'] = $service;
-
-        // Recently news
-        // $this->data['recently_news'] = $tintuc->news()
-        //     ->where('status', 1)
-        //     ->where('id', '<>', $news->id)
-        //     ->limit(4)
-        //     ->orderby('created_at', 'desc')
-        //     ->get();
-
-        // Latest news
-        // $this->data['latest_news'] = $tintuc->news()
-        //     ->where('status', 1)
-        //     ->where('id', '<>', $news->id)
-        //     ->limit(4)
-        //     ->orderby('id', 'desc')
-        //     ->get();
-
-        // Related News
-        // $this->data['related_news'] = $tintuc->news()
-        //     ->where('status', 1)
-        //     ->where('id', '<>', $news->id)
-        //     ->limit(4)
-        //     ->get();
-
         $this->data['seo'] = [
-            'seo_title' => $service->seo_title != '' ? $service->seo_title : $service->name,
-            'seo_image' => $service->image,
-            'seo_description' => $service->seo_description ?? '',
+            'seo_title' => $service->seo_title ?: $service->name,
+            'seo_image' => $service->image ?: setting_option('logo'),
+            'seo_description' => $service->seo_description ?: Str::limit(strip_tags($service->description ?: $service->content), 150),
             'seo_keyword' => $service->seo_keyword ?? '',
         ];
 
-        return view('theme.service.single', $this->data)->compileShortcodes();
+        return view('frontend.service.index', $this->data);
     }
 }
