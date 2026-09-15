@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +46,10 @@ Route::get('contact-completed.html', 'ContactController@completed')->name('conta
 
 // Tìm kiếm
 Route::get('search', 'SearchController@index')->name('search');
+
+// AI Chatbot Routes
+Route::post('ai-chat', [App\Http\Controllers\AiChatController::class, 'chat'])->name('ai.chat');
+Route::post('ai-chat/reset', [App\Http\Controllers\AiChatController::class, 'reset'])->name('ai.chat.reset');
 
 // Trang đơn (Chính sách, Giới thiệu)
 Route::get('{slug}.html', 'PageController@page')->name('page');

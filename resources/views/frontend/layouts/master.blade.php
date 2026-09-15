@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
@@ -223,12 +223,20 @@
         /* Floating CTA Mobile */
         .floating-cta {
             position: fixed;
-            bottom: 20px;
+            bottom: 92px;
             right: 20px;
             z-index: 1000;
             display: flex;
             flex-direction: column;
             gap: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .floating-cta {
+                bottom: 82px;
+                right: 16px;
+                gap: 10px;
+            }
         }
 
         .floating-btn {
@@ -548,6 +556,9 @@
             }
         });
     </script>
+
+        <!-- Stylist AI Chatbot Widget -->
+    @include('frontend.components.ai-chat-widget')
 
     @stack('scripts')
 </body>

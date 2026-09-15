@@ -1,10 +1,10 @@
 <?php
 
-namespace AppHttpMiddleware;
+namespace App\Http\Middleware;
 
 use Closure;
-use IlluminateHttpRequest;
-use IlluminateSupportFacadesAuth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CustomCKFinderAuth
 {
@@ -14,10 +14,10 @@ class CustomCKFinderAuth
      * @param  Request  $request
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = 'admin')
+    public function handle($request, Closure $next, $guard = "admin")
     {
-        config(['ckfinder.authentication' => function () use ($guard) {
-            return Auth::guard($guard)->check() || Auth::guard('web')->check() || Auth::check();
+        config(["ckfinder.authentication" => function () use ($guard) {
+            return Auth::guard($guard)->check() || Auth::guard("web")->check() || Auth::check();
         }]);
 
         return $next($request);
