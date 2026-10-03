@@ -259,7 +259,7 @@
     </section>
 
     <!-- Big Booking Section -->
-    <section class="py-5 text-white" id="booking-section"
+    <section class="py-5 text-xwhite" id="booking-section"
         style="background: linear-gradient(135deg, #181a1f, #0d0e11); border-top: 2px solid var(--salon-gold); border-bottom: 2px solid var(--salon-gold);">
         <div class="container py-4">
             <div class="row align-items-center">

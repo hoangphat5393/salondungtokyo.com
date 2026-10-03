@@ -281,7 +281,6 @@
             </div>
             <div class="d-flex align-items-center gap-3">
                 <a href="tel:{{ setting_phone(setting_option('hotline')) }}"><i class="bi bi-telephone text-warning me-1"></i> Hotline: {{ setting_option('hotline') ?: '0909 000 000' }}</a>
-                <a href="{{ route('admin.dashboard') }}" class="badge bg-secondary text-white text-decoration-none">Admin Login</a>
             </div>
         </div>
     </div>
