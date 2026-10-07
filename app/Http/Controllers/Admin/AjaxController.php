@@ -49,7 +49,30 @@ class AjaxController extends Controller
      *
      * @return void
      */
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct() {}
+
+    /**
+     * Reset AUTO_INCREMENT sau bulk delete (MySQL/PostgreSQL).
+     */
+    private function resetTableAutoIncrement(string $table): void
+    {
+        $driver = DB::connection()->getDriverName();
+
+        if ($driver === 'mysql') {
+            DB::statement("ALTER TABLE `{$table}` AUTO_INCREMENT = 1");
+        } elseif ($driver === 'pgsql') {
+            $pk = 'id';
+            $seq = DB::selectOne('SELECT pg_get_serial_sequence(?, ?)', [$table, $pk])?->pg_get_serial_sequence;
+            if ($seq) {
+                DB::statement("SELECT setval(?, COALESCE((SELECT MAX({$pk}) FROM \"{$table}\"), 1), (SELECT COUNT(*) > 0 FROM \"{$table}\"))", [$seq]);
+            }
+        }
+    }
 
     /**
      * Show the application dashboard.
@@ -82,7 +105,7 @@ class AjaxController extends Controller
 
                 // SET AUTO_INCREMENT TO 1
                 $table = (new User)->getTable();
-                DB::statement("ALTER TABLE $table AUTO_INCREMENT = 1;");
+                $this->resetTableAutoIncrement($table);
 
                 return 1;
                 break;
@@ -95,7 +118,7 @@ class AjaxController extends Controller
 
                 // SET AUTO_INCREMENT TO 1
                 $table = (new Role)->getTable();
-                DB::statement("ALTER TABLE $table AUTO_INCREMENT = 1;");
+                $this->resetTableAutoIncrement($table);
 
                 return 1;
                 break;
@@ -108,7 +131,7 @@ class AjaxController extends Controller
 
                 // SET AUTO_INCREMENT TO 1
                 $table = (new Permission)->getTable();
-                DB::statement("ALTER TABLE $table AUTO_INCREMENT = 1;");
+                $this->resetTableAutoIncrement($table);
 
                 return 1;
                 break;
@@ -117,7 +140,7 @@ class AjaxController extends Controller
 
                 // SET AUTO_INCREMENT TO 1
                 $table = (new AdminShortcode)->getTable();
-                DB::statement("ALTER TABLE $table AUTO_INCREMENT = 1;");
+                $this->resetTableAutoIncrement($table);
 
                 return 1;
                 break;
@@ -127,7 +150,7 @@ class AjaxController extends Controller
                 // SET AUTO_INCREMENT TO 1
                 $table = (new Page)->getTable();
 
-                DB::statement("ALTER TABLE $table AUTO_INCREMENT = 1;");
+                $this->resetTableAutoIncrement($table);
 
                 return 1;
                 break;
@@ -153,8 +176,8 @@ class AjaxController extends Controller
                 // SET AUTO_INCREMENT TO 1
                 $table = (new Menu)->getTable();
                 $table2 = (new MenuItems)->getTable();
-                DB::statement("ALTER TABLE $table AUTO_INCREMENT = 1;");
-                DB::statement("ALTER TABLE $table2 AUTO_INCREMENT = 1;");
+                $this->resetTableAutoIncrement($table);
+                $this->resetTableAutoIncrement($table2);
 
                 return 1;
                 break;
@@ -166,7 +189,7 @@ class AjaxController extends Controller
 
                 // SET AUTO_INCREMENT TO 1
                 $table = (new Post)->getTable();
-                DB::statement("ALTER TABLE $table AUTO_INCREMENT = 1;");
+                $this->resetTableAutoIncrement($table);
 
                 return 1;
                 break;
@@ -178,7 +201,7 @@ class AjaxController extends Controller
 
                 // SET AUTO_INCREMENT TO 1
                 $table = (new Category)->getTable();
-                DB::statement("ALTER TABLE $table AUTO_INCREMENT = 1;");
+                $this->resetTableAutoIncrement($table);
 
                 return 1;
                 break;
@@ -187,7 +210,7 @@ class AjaxController extends Controller
 
                 // SET AUTO_INCREMENT TO 1
                 $table = (new Contact)->getTable();
-                DB::statement("ALTER TABLE $table AUTO_INCREMENT = 1;");
+                $this->resetTableAutoIncrement($table);
 
                 return 1;
                 break;
@@ -196,7 +219,7 @@ class AjaxController extends Controller
 
                 // SET AUTO_INCREMENT TO 1
                 $table = (new Recruitment)->getTable();
-                DB::statement("ALTER TABLE $table AUTO_INCREMENT = 1;");
+                $this->resetTableAutoIncrement($table);
 
                 return 1;
                 break;
@@ -208,8 +231,8 @@ class AjaxController extends Controller
                 // SET AUTO_INCREMENT TO 1
                 $table = (new Album)->getTable();
                 $table2 = (new AlbumItem)->getTable();
-                DB::statement("ALTER TABLE $table AUTO_INCREMENT = 1;");
-                DB::statement("ALTER TABLE $table2 AUTO_INCREMENT = 1;");
+                $this->resetTableAutoIncrement($table);
+                $this->resetTableAutoIncrement($table2);
 
                 return 1;
                 break;
