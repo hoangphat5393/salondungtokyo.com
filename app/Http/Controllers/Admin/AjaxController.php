@@ -25,7 +25,6 @@ use App\Models\Backend\User;
 use App\Models\Backend\Ward;
 use Auth;
 use Carbon\Carbon;
-use DB;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -43,36 +42,6 @@ class AjaxController extends Controller
     //         "details" => "The user with the given ID does not exist."
     //     ]
     // ];
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct() {}
-
-    /**
-     * Reset AUTO_INCREMENT sau bulk delete (MySQL/PostgreSQL).
-     */
-    private function resetTableAutoIncrement(string $table): void
-    {
-        $driver = DB::connection()->getDriverName();
-
-        if ($driver === 'mysql') {
-            DB::statement("ALTER TABLE `{$table}` AUTO_INCREMENT = 1");
-        } elseif ($driver === 'pgsql') {
-            $pk = 'id';
-            $seq = DB::selectOne('SELECT pg_get_serial_sequence(?, ?)', [$table, $pk])?->pg_get_serial_sequence;
-            if ($seq) {
-                DB::statement("SELECT setval(?, COALESCE((SELECT MAX({$pk}) FROM \"{$table}\"), 1), (SELECT COUNT(*) > 0 FROM \"{$table}\"))", [$seq]);
-            }
-        }
-    }
 
     /**
      * Show the application dashboard.
@@ -103,10 +72,6 @@ class AjaxController extends Controller
                 // DELETE USER
                 User::whereIn('id', $arr)->delete();
 
-                // SET AUTO_INCREMENT TO 1
-                $table = (new User)->getTable();
-                $this->resetTableAutoIncrement($table);
-
                 return 1;
                 break;
             case 'role':
@@ -115,10 +80,6 @@ class AjaxController extends Controller
                 RolePermission::whereIn('role_id', $arr)->delete();
 
                 Role::whereIn('id', $arr)->delete();
-
-                // SET AUTO_INCREMENT TO 1
-                $table = (new Role)->getTable();
-                $this->resetTableAutoIncrement($table);
 
                 return 1;
                 break;
@@ -129,28 +90,15 @@ class AjaxController extends Controller
 
                 Permission::whereIn('id', $arr)->delete();
 
-                // SET AUTO_INCREMENT TO 1
-                $table = (new Permission)->getTable();
-                $this->resetTableAutoIncrement($table);
-
                 return 1;
                 break;
             case 'shortcode':
                 AdminShortcode::whereIn('id', $arr)->delete();
 
-                // SET AUTO_INCREMENT TO 1
-                $table = (new AdminShortcode)->getTable();
-                $this->resetTableAutoIncrement($table);
-
                 return 1;
                 break;
             case 'page':
                 Page::whereIn('id', $arr)->delete();
-
-                // SET AUTO_INCREMENT TO 1
-                $table = (new Page)->getTable();
-
-                $this->resetTableAutoIncrement($table);
 
                 return 1;
                 break;
@@ -173,23 +121,14 @@ class AjaxController extends Controller
                         $item->delete();
                     }
                 }
-                // SET AUTO_INCREMENT TO 1
-                $table = (new Menu)->getTable();
-                $table2 = (new MenuItems)->getTable();
-                $this->resetTableAutoIncrement($table);
-                $this->resetTableAutoIncrement($table2);
 
-                return 1;
+return 1;
                 break;
             case 'post':
                 Post::whereIn('id', $arr)->delete();
 
                 // DELETE DATA FROM PIVOT TABLE
                 PostCategory::whereIn('post_id', $arr)->delete();
-
-                // SET AUTO_INCREMENT TO 1
-                $table = (new Post)->getTable();
-                $this->resetTableAutoIncrement($table);
 
                 return 1;
                 break;
@@ -199,27 +138,15 @@ class AjaxController extends Controller
                 // DELETE DATA FROM PIVOT TABLE
                 PostCategory::whereIn('category_id', $arr)->delete();
 
-                // SET AUTO_INCREMENT TO 1
-                $table = (new Category)->getTable();
-                $this->resetTableAutoIncrement($table);
-
                 return 1;
                 break;
             case 'contact':
                 Contact::whereIn('id', $arr)->delete();
 
-                // SET AUTO_INCREMENT TO 1
-                $table = (new Contact)->getTable();
-                $this->resetTableAutoIncrement($table);
-
                 return 1;
                 break;
             case 'recruitment':
                 Recruitment::whereIn('id', $arr)->delete();
-
-                // SET AUTO_INCREMENT TO 1
-                $table = (new Recruitment)->getTable();
-                $this->resetTableAutoIncrement($table);
 
                 return 1;
                 break;
@@ -227,12 +154,6 @@ class AjaxController extends Controller
 
                 AlbumItem::whereIn('album_id', $arr)->delete();
                 Album::whereIn('id', $arr)->delete();
-
-                // SET AUTO_INCREMENT TO 1
-                $table = (new Album)->getTable();
-                $table2 = (new AlbumItem)->getTable();
-                $this->resetTableAutoIncrement($table);
-                $this->resetTableAutoIncrement($table2);
 
                 return 1;
                 break;

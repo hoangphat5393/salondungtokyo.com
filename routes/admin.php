@@ -199,6 +199,11 @@ Route::namespace('Admin')->group(function () {
         });
 
         // Theme-option
+        Route::group(['prefix' => 'database-maintenance'], function () {
+            Route::get('/', 'DatabaseMaintenanceController@index')->name('admin.database-maintenance.index');
+            Route::post('/reset', 'DatabaseMaintenanceController@reset')->name('admin.database-maintenance.reset');
+        });
+
         Route::group(['prefix' => 'theme-option'], function () {
             Route::get('/', 'AdminController@getThemeOption')->name('admin.theme-option');
             Route::post('/', 'AdminController@postThemeOption')->name('admin.theme-option.post');

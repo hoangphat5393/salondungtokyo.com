@@ -290,7 +290,7 @@
 
 
                     @php
-                        $route_active = ['admin.theme-option', 'admin.css.get', 'admin.cache.clear'];
+                        $route_active = ['admin.theme-option', 'admin.css.get', 'admin.cache.clear', 'admin.database-maintenance.index'];
                     @endphp
 
 
