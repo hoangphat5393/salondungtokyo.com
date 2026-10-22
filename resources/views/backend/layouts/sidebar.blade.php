@@ -347,6 +347,13 @@
                                     </a>
 
                                 </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.database-maintenance.index') }}" class="nav-link {{ Route::currentRouteName() == 'admin.database-maintenance.index' ? 'active' : '' }}">
+                                        <i class="nav-icon fas fa-angle-right"></i>
+                                        <p>Bảo trì CSDL</p>
+                                    </a>
+                                </li>
                             @endif
 
                             <li class="nav-item">

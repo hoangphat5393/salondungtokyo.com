@@ -13,13 +13,10 @@ class DatabaseMaintenanceService
      * @var array<string, string> Table name => Primary key column
      */
     protected array $supportedTables = [
-        'products' => 'id',
         'services' => 'id',
         'customer' => 'id',
         'categories' => 'id',
         'pages' => 'id',
-        'shop_orders' => 'cart_id',
-        'shop_order_items' => 'id',
         'contacts' => 'id',
         'menus' => 'id',
         'menu_items' => 'id',

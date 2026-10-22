@@ -1,4 +1,4 @@
-# THÔNG TIN DỰ ÁN SALON DŨNG TOKYO (SALONDUNGTOKYO.COM)
+﻿# THÔNG TIN DỰ ÁN SALON DŨNG TOKYO (SALONDUNGTOKYO.COM)
 
 ## 1. Thông Tin Tổng Quan
 
@@ -57,4 +57,9 @@
   - Đen huyền bí (`#121316`) & Xám đá sang trọng (`#1e293b`).
   - Vàng kim hoàng gia (`#D4AF37` / `#EAB308`): Tượng trưng cho sự tinh tế, đẳng cấp salon.
   - Trắng sứ ngọc trai (`#FFFFFF`): Tinh khiết, hiện đại.
-- **Nền tảng kỹ thuật:** Laravel 11/12, PHP 8.3+, AdminLTE 4 (Bootstrap 5.3), FontAwesome Pro.
+- **Nền tảng kỹ thuật (Tech Stack):**
+  - **Framework & Runtime:** PHP 8.3+, Laravel 13 (v13.37.0), Composer 2
+  - **Cơ sở dữ liệu (Database):** PostgreSQL 16 (Port 5432, UTF-8, Sequence ID Management, 11 Foreign Keys)
+  - **Frontend:** Blade, Bootstrap 5 / CSS, jQuery, Axios, Swiper, FontAwesome Pro
+  - **Trang Quản trị (Admin):** AdminLTE 4.1 (Bootstrap 5.3), Axios, FontAwesome Pro, CKFinder
+

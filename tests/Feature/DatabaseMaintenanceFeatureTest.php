@@ -5,11 +5,14 @@ namespace Tests\Feature;
 use App\Models\Backend\Role;
 use App\Models\Backend\User;
 use App\Services\DatabaseMaintenanceService;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class DatabaseMaintenanceFeatureTest extends TestCase
 {
+    use DatabaseTransactions;
+
     protected function setUp(): void
     {
         parent::setUp();

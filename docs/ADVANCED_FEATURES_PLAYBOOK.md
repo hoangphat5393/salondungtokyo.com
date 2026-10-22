@@ -1,4 +1,4 @@
-# SỔ TAY TÍNH NĂNG NÂNG CAO (ADVANCED FEATURES PLAYBOOK)
+﻿# SỔ TAY TÍNH NĂNG NÂNG CAO (ADVANCED FEATURES PLAYBOOK)
 
 > **Mục đích tài liệu:** Lưu trữ chi tiết kiến trúc, điều kiện cần, quy trình triển khai từng bước và các kinh nghiệm thực chiến (nhược điểm & cách khắc phục) của các tính năng nâng cao trong hệ thống các dự án web Laravel.  
 > **Khả năng tái sử dụng:** Dùng làm tài liệu chuẩn (Standard Operating Procedure - SOP) để nhân bản hoặc triển khai sang bất kỳ dự án Laravel nào (TMĐT, Dịch vụ, Salon, Nông nghiệp...) mà không cần tốn thời gian nghiên cứu lại từ đầu.
@@ -42,7 +42,7 @@ Hệ sinh thái hiện đã triển khai thành công Chatbot AI trên 3 dự á
   ```bash
   composer require laravel/ai
   ```
-- **Database Engine:** MySQL / MariaDB.
+- **Database Engine:** PostgreSQL 16 (Port 5432) / MySQL.
 
 ### 2.2. API Key & Nhà Cung Cấp AI (AI Provider)
 - **Google Gemini API Key:** Lấy miễn phí tại [Google AI Studio](https://aistudio.google.com/).
@@ -349,3 +349,4 @@ vendor/bin/pint --dirty --format agent
 ---
 
 _Tài liệu được cập nhật toàn diện vào ngày 15/09/2026 - Áp dụng đồng bộ cho các dự án: Vật Tư Nông Nghiệp 58, 3 Nông (3nong.vn) và Salon Dũng Tokyo (salondungtokyo.com)._
+
