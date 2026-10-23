@@ -2,8 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Admin\Service;
-use App\User;
+use App\Models\Backend\User;
 
 class ServicePolicy
 {
@@ -18,7 +17,7 @@ class ServicePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Service $service): bool
+    public function view(User $user, $service): bool
     {
         //
     }

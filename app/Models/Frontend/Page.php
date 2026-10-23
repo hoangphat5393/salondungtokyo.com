@@ -2,6 +2,7 @@
 
 namespace App\Models\Frontend;
 
+use App\Models\Backend\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
@@ -9,9 +10,9 @@ class Page extends Model
     // protected $table = 'page';
     protected $guarded = [];
 
-    public function admin()
+    public function user()
     {
-        return $this->belongsTo('App\Models\Admin', 'admin_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public static function search(string $keyword)

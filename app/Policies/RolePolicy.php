@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Admin\Role;
-use App\User;
+use App\Models\Backend\Role;
+use App\Models\Backend\User;
 
 class RolePolicy
 {

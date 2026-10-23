@@ -20,7 +20,7 @@ class Role extends Model
 
     public function administrators(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'role_users', 'role_id', 'user_id');
+        return $this->belongsToMany(User::class, 'role_user', 'role_id', 'user_id');
     }
 
     /**
@@ -28,7 +28,7 @@ class Role extends Model
      */
     public function permissions(): BelongsToMany
     {
-        return $this->belongsToMany(Permission::class, 'role_permissions');
+        return $this->belongsToMany(Permission::class, 'permission_role', 'role_id', 'permission_id');
     }
 
     /**

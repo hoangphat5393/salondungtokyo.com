@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Ai\Agents\SalonAdvisorAgent;
 use Tests\TestCase;
 
 class AiChatTest extends TestCase
@@ -56,13 +57,11 @@ class AiChatTest extends TestCase
     }
 
     /**
-     * Test live AI chat prompt via Gemini API on Salon Dũng Tokyo.
+     * Test live AI chat prompt via SalonAdvisorAgent.
      */
     public function test_ai_chat_sends_prompt_and_receives_reply(): void
     {
-        if (empty(env('GEMINI_API_KEY'))) {
-            $this->markTestSkipped('GEMINI_API_KEY is not configured in .env');
-        }
+        SalonAdvisorAgent::fake(['Dạ chào bạn, với khuôn mặt tròn da ngăm, bạn có thể tham khảo kiểu tóc Layer uốn sóng lơi nhẹ nhàng.']);
 
         $response = $this->postJson('/ai-chat', [
             'message' => 'Chào stylist, mặt tròn da ngăm thì nên cắt kiểu tóc nào và nhuộm màu gì đẹp?',

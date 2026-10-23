@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Traits\LocalizeController;
-use App\User;
 use DB;
 use Illuminate\Http\Request;
 

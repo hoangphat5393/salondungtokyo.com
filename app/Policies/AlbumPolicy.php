@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Album;
-use App\User;
+use App\Models\Backend\User;
 
 class AlbumPolicy
 {

@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
+use App\Models\Backend\User;
 use App\Models\Shortcode;
-use App\User;
 
 class ShortcodePolicy
 {

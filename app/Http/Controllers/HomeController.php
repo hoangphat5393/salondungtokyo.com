@@ -11,7 +11,6 @@ use App\Models\Rating_Product;
 use App\Models\Sponser;
 use App\Models\Theme;
 use App\Models\User_register_email;
-use App\User;
 use Auth;
 use Carbon\Carbon;
 use DB;

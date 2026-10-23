@@ -43,12 +43,26 @@ class User extends Authenticatable
         return Auth::guard('admin')->user();
     }
 
-    /**
-     * A user has and belongs to many roles.
-     */
     public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(Role::class, 'role_users');
+        return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+    }
+
+    /**
+     * Check if user has permission.
+     *
+     * @param  string  $permission
+     * @return bool
+     */
+    public function hasPermissionTo($permission)
+    {
+        if ($this->isAdministrator()) {
+            return true;
+        }
+
+        return $this->roles()->whereHas('permissions', function ($q) use ($permission) {
+            $q->where('slug', $permission);
+        })->exists();
     }
 
     /**
@@ -149,9 +163,8 @@ class User extends Authenticatable
     {
         if (self::$allPermissions === null) {
             $user = Auth::guard('admin')->user();
-            self::$allPermissions = $user->roles()->with('permissions')
-                ->get()->pluck('permissions')->flatten()
-                ->merge($user->permissions);
+            self::$allPermissions = $user ? $user->roles()->with('permissions')
+                ->get()->pluck('permissions')->flatten() : collect();
         }
 
         return self::$allPermissions;

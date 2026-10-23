@@ -521,4 +521,28 @@ class SalonAdminAndFrontendTest extends TestCase
             'id' => $newUser->id,
         ]);
     }
+
+    /**
+     * 17. Kiểm tra ACL pivot tables và quan hệ Admin/User chuẩn hóa
+     */
+    public function test_admin_auth_and_acl_relationships_are_standardized(): void
+    {
+        $user = new User;
+        $this->assertEquals('role_user', $user->roles()->getTable());
+
+        $role = new Role;
+        $this->assertEquals('role_user', $role->administrators()->getTable());
+        $this->assertEquals('permission_role', $role->permissions()->getTable());
+
+        $permission = new Permission;
+        $this->assertEquals('permission_role', $permission->roles()->getTable());
+
+        $page = new \App\Models\Frontend\Page;
+        $this->assertEquals('users', $page->user()->getRelated()->getTable());
+
+        $this->assertFalse(class_exists('App\Models\Frontend\Admin'), 'Ghost Admin model must not exist');
+        $this->assertFalse(file_exists(app_path('Models/Frontend/Admin.php')), 'Admin.php must be deleted');
+        $this->assertFalse(file_exists(app_path('Http/Controllers/UserController.php')), 'UserController.php must be deleted');
+        $this->assertFalse(file_exists(app_path('Http/Controllers/AjaxController.tpl')), 'AjaxController.tpl must be deleted');
+    }
 }

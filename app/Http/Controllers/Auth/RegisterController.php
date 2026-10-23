@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
+use App\Models\Frontend\User;
 use App\Providers\RouteServiceProvider;
-use App\User;
 use Auth;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
 use Lunaweb\RecaptchaV3\Facades\RecaptchaV3;
@@ -79,13 +79,12 @@ class RegisterController extends Controller
 
         $name = $data['name'] ?? '';
 
-        return Admin::create([
+        return User::create([
             'fullname' => $fullname,
             'name' => $name,
             'email' => $data['email'],
-            'phone' => $data['phone'],
-            'password' => bcrypt($data['password']),
-            'admin_level' => 1,
+            'phone' => $data['phone'] ?? null,
+            'password' => Hash::make($data['password']),
         ]);
     }
 
@@ -96,17 +95,10 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        // $validation_rules = array(
-        //     'email' => 'required|email|max:255|unique:users',
-        //     'phone' => 'required|string|min:10|unique:users',
-        //     'password' => 'required',
-        //     'password_confirm' => 'required|same:password',
-        // );
-
         $validation_rules = [
             'name' => 'required',
-            'email' => 'required|email|max:255|unique:admins',
-            'phone' => 'required|string|min:10|unique:admins',
+            'email' => 'required|email|max:255|unique:users',
+            'phone' => 'nullable|string|min:10|unique:users',
             'password' => 'required',
             'password_confirm' => 'required|same:password',
         ];
