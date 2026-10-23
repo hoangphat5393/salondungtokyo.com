@@ -86,3 +86,6 @@ AGENTS.md
 CLAUDE.md
 
 graphify-out/
+# Bootstrap cache
+/bootstrap/cache/*
+!/bootstrap/cache/.gitignore
