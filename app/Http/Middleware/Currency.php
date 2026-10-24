@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\ShopCurrency;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -16,9 +15,6 @@ class Currency
      */
     public function handle($request, Closure $next)
     {
-        // $currency = session('currency') ?? setting_option('currency');
-
-        // ShopCurrency::setCode($currency);
         return $next($request);
     }
 }

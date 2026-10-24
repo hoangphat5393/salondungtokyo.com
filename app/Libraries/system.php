@@ -5,10 +5,6 @@ use App\Models\Backend\Setting;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
-// use App\Models\SettingCost;
-// use App\Models\Backend\ShopCurrency;
-
-// use App\Models\Backend\Setting;
 // Product kind
 define('SC_PRODUCT_SINGLE', 0);
 define('SC_PRODUCT_BUILD', 1);
@@ -100,13 +96,6 @@ if (! function_exists('setting_option')) {
 //     function get_template()
 //     {
 //         return Helpers::getTemplatePath();
-//     }
-// }
-
-// if (!function_exists('render_price')) {
-//     function render_price(float $money, $currency = null, $rate = null, $space_between_symbol = false, $useSymbol = true)
-//     {
-//         return ShopCurrency::render($money, $currency, $rate, $space_between_symbol, $useSymbol);
 //     }
 // }
 
