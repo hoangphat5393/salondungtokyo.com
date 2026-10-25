@@ -42,7 +42,7 @@ class ServiceController extends Controller
      */
     public function store(StorePageRequest $request)
     {
-        $data = $request->except(['created_at', 'submit', 'category_id', '_token']);
+        $data = $request->except(['created_at', 'submit', 'category_id', '_token', '_method', 'id']);
 
         $name = $data['name'] ?? $request->input('title') ?? '';
         $data['name'] = $name;
@@ -96,7 +96,7 @@ class ServiceController extends Controller
     public function update(UpdatePageRequest $request, string $id)
     {
         $post = Page::where('type', 'service')->findOrFail($id);
-        $data = $request->except(['created_at', 'submit', 'category_id', '_token', '_method']);
+        $data = $request->except(['created_at', 'submit', 'category_id', '_token', '_method', 'id']);
 
         $name = $data['name'] ?? $request->input('title') ?? $post->name;
         $data['name'] = $name;

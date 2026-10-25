@@ -52,7 +52,7 @@ class ServiceCategoryController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->except(['created_at', 'submit']);
+        $data = $request->except(['created_at', 'submit', '_token', '_method', 'id']);
 
         if (! empty($request->slug)) {
             $data['slug'] = addslashes($request->slug);
@@ -72,7 +72,7 @@ class ServiceCategoryController extends Controller
     public function update(Request $request, $id)
     {
         $category = Category::findOrFail($id);
-        $data = $request->except(['created_at', 'submit']);
+        $data = $request->except(['created_at', 'submit', '_token', '_method', 'id']);
 
         if (! empty($request->slug)) {
             $data['slug'] = addslashes($request->slug);
