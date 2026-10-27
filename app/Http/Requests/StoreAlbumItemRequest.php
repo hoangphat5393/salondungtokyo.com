@@ -23,7 +23,18 @@ class StoreAlbumItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'link' => ['nullable', 'string', 'max:255'],
+            'image' => ['nullable', 'string', 'max:255'],
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => 'Tiêu đề',
+            'link' => 'Liên kết',
+            'image' => 'Hình ảnh',
         ];
     }
 }

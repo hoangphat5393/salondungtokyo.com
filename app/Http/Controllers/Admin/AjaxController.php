@@ -122,7 +122,7 @@ class AjaxController extends Controller
                     }
                 }
 
-return 1;
+                return 1;
                 break;
             case 'post':
                 Post::whereIn('id', $arr)->delete();
@@ -469,6 +469,31 @@ return 1;
                             $newImage->created_at = Carbon::now(); // changing the created_at date
                             $newImage->save(); // saving it to the database
                         }
+                    }
+                    $i++;
+                }
+
+                return 1;
+                break;
+            case 'album':
+                $i = 1;
+                foreach ($arr as $id) {
+                    $album = Album::with('items')->find($id);
+                    if (! $album) {
+                        continue;
+                    }
+                    $newAlbum = $album->replicate();
+                    $newAlbum->name = $newAlbum->name.' (Bản sao)';
+                    $newAlbum->created_at = Carbon::now();
+                    $newAlbum->save();
+
+                    Album::where('id', $newAlbum->id)->update(['sort' => $newAlbum->id]);
+
+                    foreach ($album->items as $item) {
+                        $newItem = $item->replicate();
+                        $newItem->album_id = $newAlbum->id;
+                        $newItem->created_at = Carbon::now();
+                        $newItem->save();
                     }
                     $i++;
                 }

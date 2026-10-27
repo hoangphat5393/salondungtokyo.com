@@ -45,4 +45,9 @@ class Album extends Model
     {
         return $query->where('name', 'LIKE', '%'.$value.'%');
     }
+
+    public function filterKeyword(Builder $query, string $value)
+    {
+        return $query->where('name', 'LIKE', '%'.$value.'%');
+    }
 }

@@ -17,12 +17,14 @@ class AlbumController extends Controller
      */
     public function index(Request $request)
     {
-        $album = Album::filter($request)
+        $album = Album::withCount('items')
+            ->with(['items' => fn ($q) => $q->select('id', 'album_id', 'image')->orderBy('sort')])
+            ->filter($request)
             ->orderByDesc('sort')
             ->paginate(20)
             ->appends($request->all());
 
-        $total_item = $album->count();
+        $total_item = $album->total();
 
         return view('backend.album.index', compact('album', 'total_item'));
     }

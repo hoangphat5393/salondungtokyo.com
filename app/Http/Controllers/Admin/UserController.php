@@ -56,8 +56,18 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::filter($request)
-            ->orderByDesc('id')
+        $search = $request->input('name') ?: $request->input('search_name');
+        $query = User::with('roles');
+
+        if (! empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('username', 'like', '%'.$search.'%')
+                    ->orWhere('email', 'like', '%'.$search.'%');
+            });
+        }
+
+        $users = $query->orderByDesc('id')
             ->paginate(20)
             ->appends($request->all());
 
@@ -82,6 +92,10 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $data = $request->except(['roles', 'submit', 'check_pass', 'password_confirmation', 'created_at', '_token']);
+
+        if (empty($data['name']) && $request->filled('fullname')) {
+            $data['name'] = $request->input('fullname');
+        }
 
         if (! empty($request->password)) {
             $data['password'] = Hash::make($request->password);

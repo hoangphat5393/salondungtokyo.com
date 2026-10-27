@@ -38,6 +38,16 @@ class User extends Authenticatable
 
     protected $hidden = ['password', 'remember_token'];
 
+    public function getFullnameAttribute()
+    {
+        return $this->attributes['name'] ?? $this->attributes['username'] ?? null;
+    }
+
+    public function setFullnameAttribute($value)
+    {
+        $this->attributes['name'] = $value;
+    }
+
     public static function user()
     {
         return Auth::guard('admin')->user();
