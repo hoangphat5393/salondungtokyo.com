@@ -1,4 +1,4 @@
-﻿# THÔNG TIN DỰ ÁN SALON DŨNG TOKYO (SALONDUNGTOKYO.COM)
+# THÔNG TIN DỰ ÁN SALON DŨNG TOKYO (SALONDUNGTOKYO.COM)
 
 ## 1. Thông Tin Tổng Quan
 
@@ -62,4 +62,6 @@
   - **Cơ sở dữ liệu (Database):** PostgreSQL 16 (Port 5432, UTF-8, Sequence ID Management, 11 Foreign Keys)
   - **Frontend:** Blade, Bootstrap 5 / CSS, jQuery, Axios, Swiper, FontAwesome Pro
   - **Trang Quản trị (Admin):** AdminLTE 4.1 (Bootstrap 5.3), Axios, FontAwesome Pro, CKFinder
+  - **Công cụ đồng bộ Database:** Tích hợp tính năng 1-Click đồng bộ & xuất file dump SQL MySQL (`export_mysql.bat` hoặc `composer export-mysql`). Chi tiết xem tại [docs/POSTGRES_TO_MYSQL_SYNC_GUIDE.md](docs/POSTGRES_TO_MYSQL_SYNC_GUIDE.md).
+- **Tài liệu hệ thống chi tiết:** Xem thêm tại [docs/POSTGRES_TO_MYSQL_SYNC_GUIDE.md](docs/POSTGRES_TO_MYSQL_SYNC_GUIDE.md).
 

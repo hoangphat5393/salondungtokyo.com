@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -12,15 +11,40 @@ return new class extends Migration
      */
     public function up(): void
     {
+        $conn = Schema::getConnection();
+
         // 1. Cho phép nullable trên các cột liên kết nếu cần
         if (Schema::hasColumn('pages', 'user_id')) {
-            DB::statement('ALTER TABLE pages ALTER COLUMN user_id DROP NOT NULL');
+            if ($conn->getDriverName() === 'pgsql') {
+                $conn->statement('ALTER TABLE pages ALTER COLUMN user_id DROP NOT NULL');
+            } else {
+                $conn->statement('ALTER TABLE pages MODIFY COLUMN user_id bigint unsigned NULL');
+            }
         }
 
         // 2. Đồng bộ kiểu cột (Type cast sang bigint để khớp khóa chính id)
-        if (Schema::hasTable('permission_role')) {
-            DB::statement('ALTER TABLE permission_role ALTER COLUMN permission_id TYPE bigint');
-            DB::statement('ALTER TABLE permission_role ALTER COLUMN role_id TYPE bigint');
+        if ($conn->getDriverName() === 'pgsql') {
+            if (Schema::hasTable('permission_role')) {
+                $conn->statement('ALTER TABLE permission_role ALTER COLUMN permission_id TYPE bigint');
+                $conn->statement('ALTER TABLE permission_role ALTER COLUMN role_id TYPE bigint');
+            }
+        } else {
+            if (Schema::hasTable('permission_role')) {
+                $conn->statement('ALTER TABLE permission_role MODIFY COLUMN permission_id bigint unsigned');
+                $conn->statement('ALTER TABLE permission_role MODIFY COLUMN role_id bigint unsigned');
+            }
+            if (Schema::hasTable('role_user')) {
+                $conn->statement('ALTER TABLE role_user MODIFY COLUMN user_id bigint unsigned');
+                $conn->statement('ALTER TABLE role_user MODIFY COLUMN role_id bigint unsigned');
+            }
+            if (Schema::hasTable('role_users')) {
+                $conn->statement('ALTER TABLE role_users MODIFY COLUMN user_id bigint unsigned');
+                $conn->statement('ALTER TABLE role_users MODIFY COLUMN role_id bigint unsigned');
+            }
+            if (Schema::hasTable('role_permissions')) {
+                $conn->statement('ALTER TABLE role_permissions MODIFY COLUMN permission_id bigint unsigned');
+                $conn->statement('ALTER TABLE role_permissions MODIFY COLUMN role_id bigint unsigned');
+            }
         }
 
         // 3. Thêm các ràng buộc khóa ngoại (Foreign Keys)
