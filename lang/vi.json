@@ -1,0 +1,13 @@
+{
+  "Account does not exist!": "Tài khoản không tồn tại hoặc đã bị khóa!",
+  "Email or Password is wrong": "Email hoặc mật khẩu không chính xác!",
+  "Login success": "Đăng nhập thành công!",
+  "Register success": "Đăng ký tài khoản thành công!",
+  "You are most likely a bot": "Hệ thống nghi ngờ bạn là bot tự động. Vui lòng thử lại.",
+  "Cart is empty!": "Giỏ hàng của bạn đang trống!",
+  "Cart is empty": "Giỏ hàng của bạn đang trống!",
+  "Search": "Tìm kiếm",
+  "Waiting for payment": "Đang chờ thanh toán",
+  "Payment order": "Thanh toán đơn hàng",
+  "Home": "Trang chủ"
+}

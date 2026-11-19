@@ -1,0 +1,44 @@
+// Variables
+@import "font";
+@import "theme";
+
+:root {
+    --color-shockingly-green: #0ae448;
+    --color-just-black: #0e100f;
+    --color-surface-white: #fffce1;
+    --color-pink: #fec5fb;
+    --color-shockingly-pink: #f100cb;
+    --color-orangey: #ff8709;
+    --color-lilac: #9d95ff;
+    --color-lt-green: #abff84;
+    --color-blue: #00bae2;
+    --color-grey: gray;
+    --color-surface75: #bbbaa6;
+    --color-surface50: #7c7c6f;
+    --color-surface25: #42433d;
+}
+// .container-test {
+//     position: relative;
+//     width: 100vw;
+//     height: 90vh;
+//     max-width: 900px;
+//     max-height: 700px;
+//     border-radius: 9px;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+//     border: solid 2px white;
+// }
+
+.gradient-blue {
+    background-color: var(--color-blue);
+}
+
+.gradient-pink {
+    background-color: var(--color-pink);
+}
+
+.gradient-purple {
+    background-color: var(--color-shockingly-pink);
+}

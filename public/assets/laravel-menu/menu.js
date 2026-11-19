@@ -1,0 +1,435 @@
+var arraydata = [];
+var menu_id = $('#idmenu').val();
+
+function getmenus() {
+    arraydata = [];
+    var cont = 0;
+
+    $('#spinsavemenu').show();
+
+    var parentStack = [];
+
+    $('#menu-to-edit > li.menu-item').each(function () {
+        let dept = 0;
+
+        for (var i = 0; i <= 11; i++) {
+            if ($(this).attr('class').indexOf('menu-item-depth-' + i) !== -1) {
+                dept = i;
+            }
+        }
+
+        var id = this.id.split('-');
+        var itemId = id[2];
+
+        while (parentStack.length > dept) {
+            parentStack.pop();
+        }
+
+        var padre = dept === 0 ? 0 : parentStack[dept - 1] || 0;
+
+        parentStack[dept] = itemId;
+
+        arraydata.push({
+            depth: dept,
+            id: itemId,
+            parent: padre,
+            sort: cont,
+        });
+        cont++;
+    });
+
+    updateitem();
+    actualizarmenu();
+}
+
+// Delete menu
+function deletemenu() {
+    let id = $('#idmenu').val();
+
+    if (!id) {
+        alert('Select menu first!');
+        return false;
+    }
+
+    var r = confirm('Do you want to delete this menu ?');
+
+    if (r == true) {
+        $('#spincustomu2').show();
+        axios
+            .delete((typeof admin_url !== 'undefined' ? admin_url : '/admin') + `/menu/${id}`)
+            .then((response) => {
+                const resp = response.data;
+                if (!resp.error) {
+                    window.showSwalToast?.('success', resp.message || 'Đã xóa menu thành công!');
+                    window.location = menuwr;
+                } else {
+                    window.showSwalToast?.('error', resp.message || 'Không thể xóa menu này!');
+                }
+            })
+            .catch((e) => {
+                console.error(e);
+                window.showSwalToast?.('error', 'Xóa menu thất bại!');
+            });
+
+        $('#spincustomu2').hide();
+    } else {
+        return false;
+    }
+}
+
+// Delete Menu & items
+function delete_menu_id() {
+    var id = $('#idmenu').val();
+
+    seq_list = { 0: id };
+
+    var arr = {
+        seq_list,
+        _token: getMetaContentByName('csrf-token'),
+        type: 'menuwp',
+    };
+
+    if (arr.length == 0) {
+        alert('Please choose item you want to delete!');
+        return false;
+    }
+    var info_user_admin = '';
+
+    if (confirm(info_user_admin + 'Are you sure you want to delete this menu?')) {
+        $(function () {
+            axios
+                .post(window.AdminRoutes?.bulkDelete || admin_url + '/bulk-delete', arr)
+                .then((response) => {
+                    window.location = admin_url + '/menu';
+                })
+                .catch((e) => console.error(e));
+        });
+    } else {
+        return false;
+    }
+}
+
+// Replicate Menu
+function replicate_menu_id(type, id) {
+    arr = new Array();
+
+    // var con = 0;
+    // arr.push({ name: 'seq_list[]', value: id });
+    // arr.push({ name: '_token', value: getMetaContentByName('csrf-token') });
+    // arr.push({ name: 'type', value: type });
+
+    seq_list = { 0: id };
+    var arr = {
+        seq_list,
+        _token: getMetaContentByName('csrf-token'),
+        type: type,
+    };
+
+    if (arr.length == 0) {
+        alert('Chọn dữ liệu cần tạo!');
+        return false;
+    }
+
+    if (confirm('Are you sure replicate?')) {
+        $(function () {
+            axios
+                .post(window.AdminRoutes?.bulkReplicate || admin_url + '/bulk-replicate', arr)
+                .then((response) => {
+                    location.reload();
+                })
+                .catch((e) => console.error(e));
+        });
+    } else {
+        return false;
+    }
+}
+
+// Remove Image Item
+$('.remove_menu_image').on('click', function () {
+    let id = $(this).attr('data-id');
+
+    console.log(id);
+
+    $('input[name="image_menu_' + id + '"]').val('');
+    $('.icon-' + id).attr('src', 'assets/images/placeholder.png');
+});
+
+// Add Menu Item custom js
+$('.add_custom_menu').on('click', function () {
+    $('#spincustomu').show();
+
+    var element = $(this).parent().parent();
+
+    var labelmenu = element.find('#custom-menu-item-name').val(),
+        slugmenu = element.find('#custom-menu-item-slug').val(),
+        linkmenu = element.find('#custom-menu-item-url').val(),
+        targetmenu = element.find('#custom-menu-item-target').val(),
+        rolemenu = element.find('#custom-menu-item-role').val(),
+        idmenu = $('#idmenu').val(),
+        relmenu = '';
+
+    var data = {
+        labelmenu: labelmenu,
+        slugmenu: slugmenu,
+        linkmenu: linkmenu,
+        targetmenu: targetmenu,
+        relmenu: relmenu,
+        rolemenu: rolemenu,
+        idmenu: idmenu,
+    };
+
+    var idmenu = $('#idmenu').val();
+    axios
+        .post((typeof admin_url !== 'undefined' ? admin_url : '/admin') + `/menu/${idmenu}/menuitems`, data)
+        .then((response) => {
+            window.showSwalToast?.('success', 'Đã thêm mục menu thành công!');
+            location.reload();
+        })
+        .catch((e) => {
+            console.error(e);
+            window.showSwalToast?.('error', 'Thêm mục menu thất bại!');
+        });
+
+    $('#spincustomu').hide();
+});
+
+// Add Menu Item js
+$('.add_menu_item').on('click', function () {
+    var element = $(this).parent().parent().find('.customlinkdiv').find('input[type="checkbox"]');
+
+    element.each(function (index, el) {
+        if ($(this).is(':checked')) {
+            var id = $(this).val();
+            var labelmenu = $(this)
+                .parent()
+                .find('.item-name-' + id)
+                .val();
+            slug = $(this)
+                .parent()
+                .find('.item-slug-' + id)
+                .val();
+            linkmenu = $(this)
+                .parent()
+                .find('.item-url-' + id)
+                .val();
+            typemenu = $(this)
+                .parent()
+                .find('.item-type-' + id)
+                .val();
+            addMenuItem(id, typemenu, labelmenu, linkmenu, slug);
+        }
+    });
+});
+
+function addMenuItem(id = 0, type = 'page', labelmenu = '', linkmenu = '', slug = '', targetmenu = '', rolemenu = '', relmenu = '') {
+    console.log('addMenuItem');
+
+    $('#spincustomu').show();
+    var idmenu = $('#idmenu').val();
+
+    var data = {
+        labelmenu: labelmenu,
+        linkmenu: linkmenu,
+        slug: slug,
+        targetmenu: targetmenu,
+        relmenu: relmenu,
+        rolemenu: rolemenu,
+        idmenu: idmenu,
+    };
+
+    axios
+        .post((typeof admin_url !== 'undefined' ? admin_url : '/admin') + `/menu/${idmenu}/menuitems`, data)
+        .then((response) => {
+            window.showSwalToast?.('success', 'Đã thêm mục menu thành công!');
+            location.reload();
+        })
+        .catch((e) => {
+            console.error(e);
+            window.showSwalToast?.('error', 'Thêm mục menu thất bại!');
+        });
+
+    $('#spincustomu').hide();
+}
+
+// Update menu item
+function updateitem(id = 0) {
+    var idmenu = $('#idmenu').val();
+
+    if (id) {
+        var label = $('#idlabelmenu_' + id).val();
+        // var icon = $("#icon-" + id).val();
+        var image = $('#image_menu_' + id).val();
+        var classes = $('#clases_menu_' + id).val();
+        var target = $('#target_menu_' + id).val();
+        var rel = $('#rel_menu_' + id).val();
+        var slug = $('#slug_menu_' + id).val();
+        var url = $('#url_menu_' + id).val();
+        var role_id = 0;
+        if ($('#role_menu_' + id).length) {
+            role_id = $('#role_menu_' + id).val();
+        }
+        var data = {
+            label: label,
+            // icon: icon,
+            image: image,
+            classes: classes,
+            slug: slug,
+            url: url,
+            target: target,
+            rel: rel,
+            role_id: role_id,
+            id: id,
+        };
+    } else {
+        var arr_data = [];
+        $('.menu-item-settings').each(function (k, v) {
+            var id = $(this).find('.edit-menu-item-id').val();
+            var label = $(this).find('.edit-menu-item-title').val();
+            // var icon = $(this).find(".icon-data").val();
+            var image = $(this).find('.image-data').val();
+            var classes = $(this).find('.edit-menu-item-classes').val();
+            var slug = $(this).find('.edit-menu-item-slug').val();
+            var url = $(this).find('.edit-menu-item-url').val();
+            var role = $(this).find('.edit-menu-item-role').val();
+            var target = $(this).find('.edit-menu-item-target').val();
+            var rel = $(this).find('.edit-menu-item-rel').val(),
+                content = $(this).find('.menu-content').val();
+
+            arr_data.push({
+                id: id,
+                label: label,
+                // icon: icon,
+                image: image,
+                class: classes,
+                slug: slug,
+                link: url,
+                target: target,
+                rel: rel,
+                role_id: role,
+                content: content,
+            });
+        });
+
+        var data = { arraydata: arr_data };
+    }
+
+    if (id) {
+        $('#spincustomu2').show();
+    }
+    axios
+        .post((typeof admin_url !== 'undefined' ? admin_url : '/admin') + `/menu/${idmenu}/updateMenuItem`, data)
+        .then((response) => {
+            if (id) {
+                $('#spincustomu2').hide();
+                window.showSwalToast?.('success', 'Cập nhật mục menu thành công!');
+            }
+        })
+        .catch((e) => {
+            console.error(e);
+            if (id) {
+                $('#spincustomu2').hide();
+            }
+            window.showSwalToast?.('error', 'Cập nhật mục menu thất bại!');
+        });
+}
+// End Cusome js
+
+function actualizarmenu() {
+    console.log('actualizarmenu');
+
+    var data = {
+        arraydata: arraydata,
+        menuname: $('#menu-name').val(),
+        idmenu: $('#idmenu').val(),
+    };
+
+    $('#spincustomu2').show();
+
+    axios
+        .post((typeof admin_url !== 'undefined' ? admin_url : '/admin') + `/menu/generatemenu`, data)
+        .then((response) => {
+            $('#spincustomu2').hide();
+            window.showSwalToast?.('success', 'Đã lưu cấu hình menu thành công!');
+        })
+        .catch((e) => {
+            console.error(e);
+            $('#spincustomu2').hide();
+            window.showSwalToast?.('error', 'Lưu cấu hình menu thất bại!');
+        });
+}
+
+function deleteitem(id) {
+    // console.log('deleteitem');
+
+    var idmenu = $('#idmenu').val();
+
+    $('#spincustomu').hide();
+
+    axios
+        .delete((typeof admin_url !== 'undefined' ? admin_url : '/admin') + `/menu/${idmenu}/${id}`)
+        .then((response) => {
+            window.showSwalToast?.('success', 'Đã xóa mục menu thành công!');
+        })
+        .catch((e) => {
+            console.error(e);
+            window.showSwalToast?.('error', 'Xóa mục menu thất bại!');
+        });
+}
+
+// async function deletemenu() {
+//     $('#spincustomu2').show();
+//     await deletemenu;
+//     $('#spincustomu2').hide();
+// }
+
+function createnewmenu() {
+    // console.log('createnewmenu');
+
+    // axios.defaults.withCredentials = true;
+    if (!!$('#menu-name').val()) {
+        var data = {
+            menuname: $('#menu-name').val(),
+        };
+        axios
+            .post((typeof admin_url !== 'undefined' ? admin_url : '/admin') + `/menu`, data)
+            .then((response) => {
+                window.showSwalToast?.('success', 'Tạo menu mới thành công!');
+                window.location = menuwr + '?menu=' + response.data.resp;
+            })
+            .catch((e) => {
+                console.error(e);
+                window.showSwalToast?.('error', 'Tạo menu mới thất bại!');
+            });
+    } else {
+        window.showSwalToast?.('warning', 'Vui lòng nhập tên menu!');
+        $('#menu-name').trigger('focus');
+        return false;
+    }
+}
+
+function insertParam(key, value) {
+    // console.log('insertParam');
+
+    key = encodeURI(key);
+    value = encodeURI(value);
+
+    var kvp = document.location.search.substring(1).split('&');
+    var i = kvp.length;
+    var x;
+
+    while (i--) {
+        x = kvp[i].split('=');
+        if (x[0] == key) {
+            x[1] = value;
+            kvp[i] = x.join('=');
+            break;
+        }
+    }
+
+    if (i < 0) {
+        kvp[kvp.length] = [key, value].join('=');
+    }
+
+    // This will reload the page, it's likely better to store this until finished
+    document.location.search = kvp.join('&');
+}
