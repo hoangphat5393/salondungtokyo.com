@@ -198,3 +198,12 @@ Never break:
 - UI layout
 
 Warn user before any risky action.
+
+
+---
+
+## 14. Package Manager Policy (STRICT: pnpm ONLY)
+
+- ALWAYS use `pnpm` for all Node.js dependency management and scripts (`pnpm install`, `pnpm update`, `pnpm add`, `pnpm remove`, `pnpm run dev`, `pnpm run build`, `pnpm exec`).
+- NEVER run `npm install`, `npm update`, `npm run`, or `npx`.
+- NEVER generate or commit `package-lock.json`; keep `pnpm-lock.yaml` as the single lockfile.
