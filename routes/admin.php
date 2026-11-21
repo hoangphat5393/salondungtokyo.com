@@ -198,10 +198,16 @@ Route::namespace('Admin')->group(function () {
             Route::post('alias/update_sort', 'AdminMenuController@updateSort')->name('admin_menu.update_sort');
         });
 
-        // Theme-option
+        // Database Maintenance & Multi-Format Export
         Route::group(['prefix' => 'database-maintenance'], function () {
             Route::get('/', 'DatabaseMaintenanceController@index')->name('admin.database-maintenance.index');
             Route::post('/reset', 'DatabaseMaintenanceController@reset')->name('admin.database-maintenance.reset');
+            Route::post('/export', 'DatabaseMaintenanceController@export')->name('admin.database-maintenance.export');
+            Route::get('/download/{format}', 'DatabaseMaintenanceController@download')
+                ->whereIn('format', ['mysql', 'pgsql', 'mongodb'])
+                ->name('admin.database-maintenance.download');
+            Route::post('/export-mysql', 'DatabaseMaintenanceController@exportMysql')->name('admin.database-maintenance.export-mysql');
+            Route::get('/download-mysql', 'DatabaseMaintenanceController@downloadMysql')->name('admin.database-maintenance.download-mysql');
         });
 
         Route::group(['prefix' => 'theme-option'], function () {

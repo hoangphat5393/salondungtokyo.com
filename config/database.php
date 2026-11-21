@@ -59,6 +59,22 @@ return [
             ]) : [],
         ],
 
+        'mysql_sync' => [
+            'driver' => 'mysql',
+            'host' => env('MYSQL_SYNC_HOST', '127.0.0.1'),
+            'port' => env('MYSQL_SYNC_PORT', '3306'),
+            'database' => env('MYSQL_SYNC_DATABASE', 'salondungtokyo'),
+            'username' => env('MYSQL_SYNC_USERNAME', 'root'),
+            'password' => env('MYSQL_SYNC_PASSWORD', '1'),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => false,
+            'engine' => null,
+        ],
+
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),
@@ -144,7 +160,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
         ],
 
         'default' => [
